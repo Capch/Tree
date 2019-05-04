@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="TreeMulti.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TreeMulti" 
+        xmlns:viewModel="clr-namespace:TreeMulti.ViewModel" 
+        xmlns:model="clr-namespace:TreeMulti.Model"
+        mc:Ignorable="d"
+      
+        d:DataContext="{d:DesignInstance d:Type={x:Type viewModel:MainViewModel}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="TreeViewResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="10, 0, 10, 0"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Width" Value="90"/>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="5,2,5,2" />
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+<SolidColorBrush x:Key="backgroundBrush" Color="LightGray"/>
+
+        <Style x:Key="treeViewStyle" BasedOn="{StaticResource {x:Type TreeView}}" TargetType="{x:Type local:MultiSelectTreeView}">
+                <Setter Property="Background" Value="{StaticResource backgroundBrush}"/>
+        </Style>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <local:MultiSelectTreeView Grid.Row="0" SelectCount="{Binding Count}" SelectedItems="{Binding SelectedItems, 
+            UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Tree, UpdateSourceTrigger=PropertyChanged}" 
+                                   SelectMode="{x:Static SelectionMode.Multiple}"
+                                   Style="{StaticResource treeViewStyle}"
+                                   ItemContainerStyle="{StaticResource MultiSelectTreeViewItemStyle}" HorizontalContentAlignment="Stretch" Padding="10" Margin="10" FontSize="16">
+            <local:MultiSelectTreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type model:GroupNode}" ItemsSource="{Binding Children}" >
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Res/folder.png" Margin="0,0,5,0" Width="20" Height="20"/>
+                        <TextBlock Text="{Binding Name}" Style="{StaticResource {x:Type TextBlock}}"/>
+                        <TextBlock Text="{Binding Comment}" Foreground="Blue" Style="{StaticResource {x:Type TextBlock}}" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <DataTemplate DataType="{x:Type model:Node1}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Res/1.ico" Margin="0,0,5,0" Width="20" Height="20" />
+                        <TextBlock Text="{Binding Name}" Style="{StaticResource {x:Type TextBlock}}"/>
+                        <TextBlock Text="{Binding Comment}" Style="{StaticResource {x:Type TextBlock}}"/>
+                        <TextBlock Text="{Binding Comment2}" Foreground="Blue" Style="{StaticResource {x:Type TextBlock}}" />
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type model:Node2}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Res/2.png" Margin="0,0,5,0" Width="20" Height="20" />
+                        <TextBlock Text="{Binding Name}" Style="{StaticResource {x:Type TextBlock}}"/>
+                        <TextBlock Text="{Binding Comment}" Style="{StaticResource {x:Type TextBlock}}"/>
+                        <TextBlock Text="{Binding Comment2}" Foreground="Blue" Style="{StaticResource {x:Type TextBlock}}"/>
+                        <TextBlock Text="{Binding Comment3}" Foreground="Blue" Style="{StaticResource {x:Type TextBlock}}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </local:MultiSelectTreeView.Resources>
+        </local:MultiSelectTreeView>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
+            <Menu >
+                <MenuItem Header="Add" Height="30" Width="100">
+                    <MenuItem Header="Add Group" Command="{Binding AddCommand}" CommandParameter="{x:Static local:NodeTypes.GroupNode}" />
+                    <MenuItem Header="Add Node 1" Command="{Binding AddCommand}" CommandParameter="{x:Static local:NodeTypes.Node1}"/>
+                    <MenuItem Header="Add Node 2" Command="{Binding AddCommand}" CommandParameter="{x:Static local:NodeTypes.Node2}"/>
+                </MenuItem>
+            </Menu>
+
+            <Button Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItems}" Content="Edit"/>
+            <Button Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItems}" Content="{Binding Count}" ContentStringFormat="Delete ({0})"/>
+            <Button Command="{Binding InitCommand}" Content="Init"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>
