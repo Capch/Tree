@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Runtime.Serialization;
-using TreeMulti.Helpers;
+using System.Linq;
 
 namespace TreeMulti.Model
 {
@@ -14,18 +11,12 @@ namespace TreeMulti.Model
         public GroupNode(string name, string comment) : base(name, comment)
         {
             Children = new ObservableCollection<Node>();
-            Children.CollectionChanged += ChildrenOnCollectionChanged;
         }
-
-        private void ChildrenOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Children));
-        }
-
+        
         public void AddChild(Node node)
         {
-            node.Parent = this;
             Children.Add(node);
+            SortChildren();
         }
 
         public void Delete(Node node)
@@ -56,6 +47,11 @@ namespace TreeMulti.Model
                 _children = value;
                 OnPropertyChanged();
             }
+        }
+
+        public void SortChildren()
+        {
+            Children = new ObservableCollection<Node>(Children.OrderBy(x=>x.GetType().FullName));
         }
     }
 }

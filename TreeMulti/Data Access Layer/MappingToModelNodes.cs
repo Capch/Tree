@@ -29,32 +29,25 @@ namespace TreeMulti
         public static Model.Node1 ConvertToModel([NotNull] this Data.Node1 dataNode)
         {
             if (dataNode == null) throw new ArgumentNullException(nameof(dataNode));
-            return new Model.Node1(dataNode.Name, dataNode.Comment, dataNode.Comment2)
-            {
-                Parent = dataNode.Parent.ConvertToModel()
-            };
+            return new Model.Node1(dataNode.Name, dataNode.Comment, dataNode.Comment2);
         }
         public static Model.Node2 ConvertToModel([NotNull] this Data.Node2 dataNode)
         {
             if (dataNode == null) throw new ArgumentNullException(nameof(dataNode));
-            return new Model.Node2(dataNode.Name, dataNode.Comment, dataNode.Comment2, dataNode.Comment3)
-            {
-                Parent = dataNode.Parent.ConvertToModel()
-            };
+            return new Model.Node2(dataNode.Name, dataNode.Comment, dataNode.Comment2, dataNode.Comment3);
         }
         public static Model.GroupNode ConvertToModel([NotNull] this Data.GroupNode dataNode)
         {
             if (dataNode == null) throw new ArgumentNullException(nameof(dataNode));
-            var groupData = new Model.GroupNode(dataNode.Name, dataNode.Comment)
-            {
-                Parent = dataNode.Parent.ConvertToModel()
-            };
+            var groupData = new Model.GroupNode(dataNode.Name, dataNode.Comment);
 
             var children = new ObservableCollection<Model.Node>();
 
             foreach (var child in dataNode.Children)
             {
-                children.Add(child.ConvertToModel());
+                var tempNode = child.ConvertToModel();
+                tempNode.Parent = groupData;
+                children.Add(tempNode);
             }
 
             groupData.Children = children;

@@ -25,10 +25,10 @@
                 <Setter Property="FontSize" Value="14"/>
             </Style>
 
-<SolidColorBrush x:Key="backgroundBrush" Color="LightGray"/>
+<SolidColorBrush x:Key="BackgroundBrush" Color="LightGray"/>
 
-        <Style x:Key="treeViewStyle" BasedOn="{StaticResource {x:Type TreeView}}" TargetType="{x:Type local:MultiSelectTreeView}">
-                <Setter Property="Background" Value="{StaticResource backgroundBrush}"/>
+        <Style x:Key="TreeViewStyle" BasedOn="{StaticResource {x:Type TreeView}}" TargetType="{x:Type local:MultiSelectTreeView}">
+                <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
         </Style>
 
         </ResourceDictionary>
@@ -43,7 +43,7 @@
         <local:MultiSelectTreeView Grid.Row="0" SelectCount="{Binding Count}" SelectedItems="{Binding SelectedItems, 
             UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Tree, UpdateSourceTrigger=PropertyChanged}" 
                                    SelectMode="{x:Static SelectionMode.Multiple}"
-                                   Style="{StaticResource treeViewStyle}"
+                                   Style="{StaticResource TreeViewStyle}"
                                    ItemContainerStyle="{StaticResource MultiSelectTreeViewItemStyle}" HorizontalContentAlignment="Stretch" Padding="10" Margin="10" FontSize="16">
             <local:MultiSelectTreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type model:GroupNode}" ItemsSource="{Binding Children}" >

@@ -4,7 +4,7 @@ namespace TreeMulti.Data
 {
     public abstract class Node 
     {
-        public Node() { }
+        protected Node() { }
         protected Node(string name, string comment)
         {
             Name = name;
