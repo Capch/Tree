@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using System.Collections.ObjectModel;
-using TreeMulti.Model;
+﻿using System.Collections.Generic;
+using TreeMulti.Data;
+
 
 namespace TreeMulti.Interfaces
 {
     public interface ITreeRepository
     {
-        IEnumerable GetTree();
-        void SetTree(IEnumerable tree);
+        IEnumerable<Node> GetTree();
+        void SaveTree(IEnumerable<Node> tree);
     }
 }

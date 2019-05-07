@@ -82,7 +82,7 @@ namespace TreeMulti.Helpers
         private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var handler = ItemPropertyChanged;
-            if (handler != null) { handler(sender, e); }
+            handler?.Invoke(sender, e);
         }
 
         public event PropertyChangedEventHandler ItemPropertyChanged;

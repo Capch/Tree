@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Windows;
 using TreeMulti.Interfaces;
 
@@ -31,8 +30,8 @@ namespace TreeMulti
                 var window = new DialogBase(view)
                 {
                     Title = (view as IWindowConfiguration)?.GetWindowTitle(),
-                    Height = (view as IWindowConfiguration).GetWindowSize().Height,
-                    Width = (view as IWindowConfiguration).GetWindowSize().Width
+                    Height = ((IWindowConfiguration) view).GetWindowSize().Height,
+                    Width = ((IWindowConfiguration) view).GetWindowSize().Width
                 };
                 viewModel.RequestClose += (sender, e) => window.Close();
                 result = window.ShowDialog();

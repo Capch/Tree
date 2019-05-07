@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -82,17 +85,14 @@
     <Compile Include="Interfaces\ICloseable.cs" />
     <Compile Include="Interfaces\IWindowConfiguration.cs" />
     <Compile Include="Interfaces\ITreeRepository.cs" />
-    <Compile Include="Model\DataContracts\GroupNode.cs" />
-    <Compile Include="Model\DataContracts\Node.cs" />
-    <Compile Include="Model\DataContracts\Node1.cs" />
-    <Compile Include="Model\DataContracts\Node2.cs" />
-    <Compile Include="Model\InitXml.cs" />
+    <Compile Include="Data Access Layer\JsonRepository.cs" />
     <Compile Include="Model\Node.cs" />
     <Compile Include="Model\Node1.cs" />
     <Compile Include="Model\Node2.cs" />
     <Compile Include="Model\GroupNode.cs" />
-    <Compile Include="Model\TreeXmlRepository.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Data Access Layer\MappingToDataNodes.cs" />
+    <Compile Include="Data Access Layer\MappingToModelNodes.cs" />
     <Compile Include="ViewModel\AddViewModel.cs" />
     <Compile Include="Helpers\Command.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -127,6 +127,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -141,6 +142,12 @@
   <ItemGroup>
     <Resource Include="Res\1.ico" />
     <Resource Include="Res\2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TreeMulti.Data\TreeMulti.Data.csproj">
+      <Project>{484e4e30-72db-4377-9ccb-9cee314ef4ff}</Project>
+      <Name>TreeMulti.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

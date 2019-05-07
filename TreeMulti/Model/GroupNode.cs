@@ -7,19 +7,13 @@ using TreeMulti.Helpers;
 
 namespace TreeMulti.Model
 {
-    [Serializable]
     public class GroupNode : Node
     {
         private ObservableCollection<Node> _children;
 
-        public GroupNode()
-        {
-            Children = new ObservableCollection<Node>();
-            Children.CollectionChanged += ChildrenOnCollectionChanged;
-        }
         public GroupNode(string name, string comment) : base(name, comment)
         {
-            Children = new ObservableCollection<Node >();
+            Children = new ObservableCollection<Node>();
             Children.CollectionChanged += ChildrenOnCollectionChanged;
         }
 
@@ -28,27 +22,12 @@ namespace TreeMulti.Model
             OnPropertyChanged(nameof(Children));
         }
 
-        [OnDeserialized]
-        public void OnSerializedMethod(StreamingContext context)
-        {
-            if (Children != null)
-                foreach (var item in Children)
-                {
-                    item.Parent = this;
-                }
-        }
         public void AddChild(Node node)
         {
             node.Parent = this;
             Children.Add(node);
         }
-        public void AddChildren(List<Node> nodes)
-        {
-            foreach (var item in nodes)
-            {
-                Children.Add(item);
-            }
-        }
+
         public void Delete(Node node)
         {
             foreach (var item in Children)
@@ -70,14 +49,13 @@ namespace TreeMulti.Model
             get => _children;
             set
             {
-                if (Equals(value, _children))
+                if (_children == value)
                 {
                     return;
                 }
                 _children = value;
                 OnPropertyChanged();
             }
-            
         }
     }
 }

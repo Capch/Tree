@@ -20,7 +20,7 @@ namespace TreeMulti
         {
             base.OnStartup(e);
 
-            var mainViewModel = new MainViewModel(new TreeXmlRepository());
+            var mainViewModel = new MainViewModel(new JsonRepository("file.json"));
             DialogService.ShowDialog(mainViewModel);
         }
     }

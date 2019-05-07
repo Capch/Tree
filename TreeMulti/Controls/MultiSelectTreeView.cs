@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using TreeMulti.Model;
 
 namespace TreeMulti
 {
@@ -220,9 +219,7 @@ namespace TreeMulti
 
             for (var index = 0; index < parentItem.Items.Count; index++)
             {
-                var tvItem = parentItem.ItemContainerGenerator.ContainerFromIndex(index) as TreeViewItem;
-                if (tvItem == null) continue;
-
+                if (!(parentItem.ItemContainerGenerator.ContainerFromIndex(index) is TreeViewItem tvItem)) continue;
                 itemList.Add(tvItem);
                 if (includeCollapsedItems || tvItem.IsExpanded)
                     GetTreeViewItems(tvItem, includeCollapsedItems, itemList);

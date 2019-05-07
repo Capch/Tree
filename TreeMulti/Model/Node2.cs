@@ -8,11 +8,8 @@ namespace TreeMulti.Model
         private string _comment2;
         private string _comment3;
 
-        public Node2() 
-        {
-
-        }
-        public Node2(string name, string comment, string comment2, string comment3) : base(name, comment)
+        public Node2(string name, string comment, string comment2, string comment3) 
+            :base(name, comment)
         {
             Comment2 = comment2;
             Comment3 = comment3;
@@ -23,7 +20,7 @@ namespace TreeMulti.Model
             get => _comment2;
             set
             {
-                if (value == _comment2)
+                if (_comment2 == value)
                 {
                     return;
                 }
@@ -37,7 +34,7 @@ namespace TreeMulti.Model
             get => _comment3;
             set
             {
-                if (value == _comment3)
+                if (_comment3 == value)
                 {
                     return;
                 }

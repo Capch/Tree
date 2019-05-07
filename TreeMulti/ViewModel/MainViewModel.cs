@@ -1,12 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using TreeMulti.Helpers;
 using TreeMulti.Interfaces;
 using TreeMulti.Model;
 
@@ -15,7 +11,6 @@ namespace TreeMulti.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private readonly ITreeRepository _rep;
-        private ObservableCollectionEx<Node> _tree;
         private int _count;
         private IEnumerable<object> _selectedItems;
         public MainViewModel(ITreeRepository treeRepository)
@@ -25,11 +20,10 @@ namespace TreeMulti.ViewModel
             EditCommand = new Command(EditNode);
             InitCommand = new Command(ResetInit);
             _rep = treeRepository;
-            if (_rep.GetTree() is IEnumerable<Node> nodes)
+
+            if (_rep.GetTree().ToModel() is IEnumerable<Node> nodes)
             {
-                Tree = new ObservableCollectionEx<Node>(nodes);
-                Tree.CollectionChanged += TreeCollectionChanged;
-                Tree.ItemPropertyChanged += TreeCollectionChanged;
+                Tree = new ObservableCollection<Node>(nodes);
             }
         }
 
@@ -58,15 +52,7 @@ namespace TreeMulti.ViewModel
                 OnPropertyChanged();
             }
         }
-        public ObservableCollectionEx<Node> Tree
-        {
-            get => _tree;
-            set
-            {
-                _tree = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<Node> Tree { get; set; }
 
         private bool IsSelectedOne(object obj)
         {
@@ -87,81 +73,81 @@ namespace TreeMulti.ViewModel
 
         private void AddNewNode(object obj)
         {
-            Node parent;
-            Node item;
-            if (SelectedItems != null)
-            {
-                item = (Node)SelectedItems.ToList().First();
-                parent = item.Parent;
-            }
-            else
-            {
-                item = null;
-                parent = null;
-            }
+            //Node parent;
+            //Node item;
+            //if (SelectedItems != null)
+            //{
+            //    item = (Node)SelectedItems.ToList().FirstOrDefault();
+            //    parent = item.Parent;
+            //}
+            //else
+            //{
+            //    item = null;
+            //    parent = null;
+            //}
 
-            Node result = null;
-            var type = (obj is NodeTypes ? (NodeTypes)obj : NodeTypes.GroupNode);
+            //Node result = null;
+            //var type = (obj is NodeTypes ? (NodeTypes)obj : NodeTypes.GroupNode);
 
-            switch (type)
-            {
-                case NodeTypes.GroupNode:
-                    result = CatchNode(new GroupNode());
-                    break;
-                case NodeTypes.Node1:
-                    result = CatchNode(new Node1());
-                    break;
-                case NodeTypes.Node2:
-                    result = CatchNode(new Node2());
-                    break;
-                default:
-                    result = CatchNode(new GroupNode());
-                    break;
-            }
+            //switch (type)
+            //{
+            //    case NodeTypes.GroupNode:
+            //        result = CatchNode(new GroupNode());
+            //        break;
+            //    case NodeTypes.Node1:
+            //        result = CatchNode(new Node1());
+            //        break;
+            //    case NodeTypes.Node2:
+            //        result = CatchNode(new Node2());
+            //        break;
+            //    default:
+            //        result = CatchNode(new GroupNode());
+            //        break;
+            //}
             
 
-            if (!(item is GroupNode groupNode))
-            {
-                Tree.Add(result);
-            }
-            else
-            {
-                groupNode.Children.Add(result);
-            }
+            //if (!(item is GroupNode groupNode))
+            //{
+            //    Tree.Add(result);
+            //}
+            //else
+            //{
+            //    groupNode.Children.Add(result);
+            //}
 
         }
 
         private void EditNode(object obj)
         {
-            var item = (Node)((IEnumerable<object>)obj).First();
+            //var item = (Node)((IEnumerable<object>)obj).First();
 
-            Node result = null;
+            //Node result = null;
 
-            switch (item)
-            {
-                case GroupNode groupNode:
-                    result = CatchNode(groupNode);
-                    break;
-                case Node1 node1:
-                    result = CatchNode(node1);
-                    break;
-                case Node2 node2:
-                    result = CatchNode(node2);
-                    break;
-            }
-            if (result == null) return;
-            if (item.Parent != null)
-            {
-                var parent = (GroupNode)item.Parent;
-                result.Parent = item.Parent;
-                var index = parent.Children.IndexOf(item);
-                parent.Children[index] = result;
-            }
-            else
-            {
-                var index = Tree.IndexOf(item);
-                Tree[index] = result;
-            }
+            //switch (item)
+            //{
+            //    case GroupNode groupNode:
+            //        result = CatchNode(groupNode);
+            //        break;
+            //    case Node1 node1:
+            //        result = CatchNode(node1);
+            //        break;
+            //    case Node2 node2:
+            //        result = CatchNode(node2);
+            //        break;
+            //}
+            //if (result == null) return;
+            //if (item.Parent != null)
+            //{
+            //    var parent = (GroupNode)item.Parent;
+            //    result.Parent = item.Parent;
+            //    var index = parent.Children.IndexOf(item);
+            //    parent.Children[index] = result;
+            //}
+            //else
+            //{
+            //    var index = Tree.IndexOf(item);
+            //    Tree[index] = result;
+            //}
         }
 
         private Node CatchNode(Node baseNode)
@@ -202,26 +188,33 @@ namespace TreeMulti.ViewModel
         }
         private void ResetInit(object obj)
         {
-            InitXml.Init();
-            if (_rep.GetTree() is IEnumerable<Node> nodes)
+            var n1_1 = new Node1("Node1", "comment1", "comment2");
+            var n1_2 = new Node1("Node1", "comment1", "comment2");
+            var g1 = new GroupNode("group1", "comment1")
             {
-                Tree = new ObservableCollectionEx<Node>(nodes);
-            }
+                Children = new ObservableCollection<Node> {n1_1, n1_2}
+            };
+            var n1_3 = new Node1("Node1", "comment1", "comment2");
+            var n1_4 = new Node1("Node1", "comment1", "comment2");
+            var g2 = new GroupNode("group2", "comment1")
+            {
+                Children = new ObservableCollection<Node> { n1_1, n1_2 }
+            };
+            var n1_5 = new Node1("Node1", "comment1", "comment2");
+            var n1_6 = new Node1("Node1", "comment1", "comment2");
+            var g3 = new GroupNode("group2", "comment1");
+            n1_5.Parent = g3;
+            n1_6.Parent = g3;
+            g3.Children.Add(n1_5);
+            g3.Children.Add(n1_6);
+            g2.Children.Add(g3);
 
-        }
-        private void ClearSelectedItems()
-        {
-            SelectedItems = null;
-            Count = 0;
-        }
-        private void TreeCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            _rep.SetTree(Tree.ToArray());
-        }
-
-        private void TreeCollectionChanged(object sender, PropertyChangedEventArgs e)
-        {
-            _rep.SetTree(Tree.ToArray());
+            var a = new List<Node>();
+            a.Add(g1);
+            a.Add(g2);
+            Tree = new ObservableCollection<Node>(a);
+            OnPropertyChanged(nameof(Tree));
+            _rep.SaveTree(a.ToData());
         }
     }
 }

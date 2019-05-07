@@ -11,7 +11,7 @@ namespace TreeMulti.Interfaces
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
-    
+
         public event EventHandler<EventArgs> RequestClose;
 
         protected virtual void OnRequestClose()

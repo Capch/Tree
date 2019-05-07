@@ -1,18 +1,14 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Xml.Serialization;
 using TreeMulti.Annotations;
 
 namespace TreeMulti.Model
 {
-    [Serializable, XmlInclude(typeof(Node)), XmlInclude(typeof(Node1)), XmlInclude(typeof(Node2)), XmlInclude(typeof(GroupNode))]
     public abstract class Node : INotifyPropertyChanged
     {
-        protected Node()
-        {
-
-        }
+        private string _name;
+        private string _comment;
+        private Node _parent;
 
         protected Node(string name, string comment)
         {
@@ -25,7 +21,10 @@ namespace TreeMulti.Model
             get => _name;
             set
             {
-                if (value == _name) return;
+                if (_name == value)
+                {
+                    return;
+                }
                 _name = value;
                 OnPropertyChanged();
             }
@@ -36,7 +35,7 @@ namespace TreeMulti.Model
             get => _comment;
             set
             {
-                if (value == _comment)
+                if (_comment == value)
                 {
                     return;
                 }
@@ -45,12 +44,20 @@ namespace TreeMulti.Model
             }
         }
 
-        [NonSerialized]
-        public Node Parent;
-
-        private string _name;
-        private string _comment;
-
+        public Node Parent
+        {
+            get => _parent;
+            set
+            {
+                if (_parent == value)
+                {
+                    return;
+                }
+                _parent = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
