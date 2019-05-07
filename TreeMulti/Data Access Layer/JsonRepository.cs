@@ -12,10 +12,7 @@ namespace TreeMulti
         public JsonRepository(string path)
         {
             _filepath = path;
-            using (var fs = new FileStream(_filepath, FileMode.OpenOrCreate))
-            {
-
-            }
+            using (new FileStream(_filepath, FileMode.OpenOrCreate)) { }
         }
         public IEnumerable<Node> GetTree()
         {

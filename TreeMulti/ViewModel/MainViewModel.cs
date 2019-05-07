@@ -13,6 +13,8 @@ namespace TreeMulti.ViewModel
         private readonly ITreeRepository _rep;
         private int _count;
         private IEnumerable<object> _selectedItems;
+        private ObservableCollection<Node> _tree;
+
         public MainViewModel(ITreeRepository treeRepository)
         {
             AddCommand = new Command(AddNewNode);
@@ -50,7 +52,15 @@ namespace TreeMulti.ViewModel
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<Node> Tree { get; set; }
+        public ObservableCollection<Node> Tree
+        {
+            get => _tree;
+            set
+            {
+                _tree = value;
+                OnPropertyChanged();
+            }
+        }
 
         private bool IsSelectedOne(object obj)
         {
@@ -187,21 +197,21 @@ namespace TreeMulti.ViewModel
         private void ResetInit(object obj)
         {
             var g1 = new GroupNode("group1", "comment1");
-            var n1_1 = new Node1("Node1", "comment1", "comment2") {Parent = g1};
+            var n1_1 = new Node2("Node2", "comment1", "comment2", "comment3") {Parent = g1};
             var n1_2 = new Node1("Node1", "comment1", "comment2") { Parent = g1 };
             
             g1.AddChild(n1_1);
             g1.AddChild(n1_2);
 
             var g2 = new GroupNode("group2", "comment1");
-            var n1_3 = new Node1("Node1", "comment1", "comment2") { Parent = g2 };
+            var n1_3 = new Node2("Node2", "comment1", "comment2", "comment3") { Parent = g2 };
             var n1_4 = new Node1("Node1", "comment1", "comment2") { Parent = g2 };
             
             g2.AddChild(n1_3);
             g2.AddChild(n1_4);
 
             var g3 = new GroupNode("group2", "comment1") { Parent = g2 };
-            var n1_5 = new Node1("Node1", "comment1", "comment2") { Parent = g3 };
+            var n1_5 = new Node2("Node2", "comment1", "comment2", "comment3") { Parent = g3 };
             var n1_6 = new Node1("Node1", "comment1", "comment2") { Parent = g3 };
             
             g3.AddChild(n1_5);
@@ -212,7 +222,6 @@ namespace TreeMulti.ViewModel
             Tree.Add(g1);
             Tree.Add(g2);
             _rep.SaveTree(Tree.ToData());
-            OnPropertyChanged(nameof(Tree));
         }
     }
 }

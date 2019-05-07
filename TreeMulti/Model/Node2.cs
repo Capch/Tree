@@ -1,8 +1,5 @@
-﻿using System;
-
-namespace TreeMulti.Model
+﻿namespace TreeMulti.Model
 {
-    [Serializable]
     public class Node2 : Node
     {
         private string _comment2;

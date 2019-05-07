@@ -25,11 +25,11 @@
                 <Setter Property="FontSize" Value="14"/>
             </Style>
 
-<SolidColorBrush x:Key="BackgroundBrush" Color="LightGray"/>
+            <SolidColorBrush x:Key="BackgroundBrush" Color="LightGray"/>
 
-        <Style x:Key="TreeViewStyle" BasedOn="{StaticResource {x:Type TreeView}}" TargetType="{x:Type local:MultiSelectTreeView}">
+            <Style x:Key="TreeViewStyle" BasedOn="{StaticResource {x:Type TreeView}}" TargetType="{x:Type local:MultiSelectTreeView}">
                 <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
-        </Style>
+            </Style>
 
         </ResourceDictionary>
     </UserControl.Resources>
@@ -44,13 +44,15 @@
             UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Tree, UpdateSourceTrigger=PropertyChanged}" 
                                    SelectMode="{x:Static SelectionMode.Multiple}"
                                    Style="{StaticResource TreeViewStyle}"
-                                   ItemContainerStyle="{StaticResource MultiSelectTreeViewItemStyle}" HorizontalContentAlignment="Stretch" Padding="10" Margin="10" FontSize="16">
+                                   ItemContainerStyle="{StaticResource MultiSelectTreeViewItemStyle}" HorizontalContentAlignment="Stretch" 
+                                   Padding="10" Margin="10" FontSize="16">
             <local:MultiSelectTreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type model:GroupNode}" ItemsSource="{Binding Children}" >
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Res/folder.png" Margin="0,0,5,0" Width="20" Height="20"/>
                         <TextBlock Text="{Binding Name}" Style="{StaticResource {x:Type TextBlock}}"/>
-                        <TextBlock Text="{Binding Comment}" Foreground="Blue" Style="{StaticResource {x:Type TextBlock}}" HorizontalAlignment="Stretch"/>
+                        <TextBlock Text="{Binding Comment}" Foreground="Blue" Style="{StaticResource {x:Type TextBlock}}" 
+                                   HorizontalAlignment="Stretch"/>
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type model:Node1}">
@@ -83,7 +85,8 @@
             </Menu>
 
             <Button Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItems}" Content="Edit"/>
-            <Button Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItems}" Content="{Binding Count}" ContentStringFormat="Delete ({0})"/>
+            <Button Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItems}" Content="{Binding Count}" 
+                    ContentStringFormat="Delete ({0})"/>
             <Button Command="{Binding InitCommand}" Content="Init"/>
         </StackPanel>
 

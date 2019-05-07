@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TreeMulti.Helpers
+namespace TreeMulti
 {
     [Serializable]
     public partial class ObservableCollectionEx<T> : ObservableCollection<T>
