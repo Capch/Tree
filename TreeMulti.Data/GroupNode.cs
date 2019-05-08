@@ -8,9 +8,12 @@ namespace TreeMulti.Data
         {
 
         }
+
         public GroupNode(string name, string comment) : base(name, comment)
         {
         }
+
         public IEnumerable<Node> Children { get; set; }
+
     }
 }

@@ -7,7 +7,19 @@ namespace TreeMulti.ViewModel
 {
     public class AddViewModel : ViewModelBase
     {
+
         private Node _newNode;
+
+        public AddViewModel(Node item = null)
+        {
+            AddCommand = new Command(AddNode, IsFieldNotEmpty);
+            NewNode = item;
+        }
+
+        private bool IsFieldNotEmpty(object arg)
+        {
+            return NewNode.IsNotEmpty();
+        }
 
         public Node NewNode
         {
@@ -18,18 +30,12 @@ namespace TreeMulti.ViewModel
                 OnPropertyChanged();
             }
         }
-        public AddViewModel(Node item = null)
-        {
-            AddCommand = new Command(AddNode);
-            NewNode = item;
-        }
-
         public ICommand AddCommand { get; set; }
 
         private void AddNode(object obj)
         {
-
             OnRequestClose();
         }
+
     }
 }

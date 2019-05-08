@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace TreeMulti
 {
@@ -27,7 +28,7 @@ namespace TreeMulti
         private void CopyFrom(IEnumerable<T> collection)
         {
             IList<T> items = Items;
-            if (collection != null && items != null)
+            if (collection != null)
             {
                 using (IEnumerator<T> enumerator = collection.GetEnumerator())
                 {
@@ -80,6 +81,16 @@ namespace TreeMulti
         {
             var handler = ItemPropertyChanged;
             handler?.Invoke(sender, e);
+        }
+
+        public void Sort()
+        {
+            var items = Items.ToList().OrderBy(x=>x.GetType().Name).ThenBy(x=>x.ToString());
+            ClearItems();
+            foreach (var item in items)
+            {
+                Add(item);
+            }
         }
 
         public event PropertyChangedEventHandler ItemPropertyChanged;

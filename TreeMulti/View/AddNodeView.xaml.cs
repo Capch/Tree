@@ -12,7 +12,7 @@ namespace TreeMulti.View
 
         public Size GetWindowSize()
         {
-           return new Size(300,200);
+           return new Size(300,600);
         }
 
         public string GetWindowTitle()

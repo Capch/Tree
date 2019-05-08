@@ -8,12 +8,15 @@ namespace TreeMulti
 {
     public class JsonRepository : ITreeRepository
     {
+
         private readonly string _filepath;
+
         public JsonRepository(string path)
         {
             _filepath = path;
             using (new FileStream(_filepath, FileMode.OpenOrCreate)) { }
         }
+
         public IEnumerable<Node> GetTree()
         {
             return ReadJson();
@@ -54,5 +57,6 @@ namespace TreeMulti
                     }));
             }
         }
+
     }
 }

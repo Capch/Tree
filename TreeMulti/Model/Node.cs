@@ -9,6 +9,12 @@ namespace TreeMulti.Model
         private string _name;
         private string _comment;
         private Node _parent;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected Node()
+        {
+            
+        }
 
         protected Node(string name, string comment)
         {
@@ -58,12 +64,21 @@ namespace TreeMulti.Model
             }
         }
         
-        public event PropertyChangedEventHandler PropertyChanged;
-
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public virtual bool IsNotEmpty()
+        {
+            return (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Comment));
+        }
+
+        public override string ToString()
+        {
+            return Name.ToString()+Comment.ToString();
+        }
+
     }
 }

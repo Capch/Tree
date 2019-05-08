@@ -5,15 +5,22 @@ namespace TreeMulti.Model
 {
     public class GroupNode : Node
     {
-        private ObservableCollection<Node> _children;
+
+        private ObservableCollectionEx<Node> _children;
+
+        public GroupNode()
+        {
+            Children = new ObservableCollectionEx<Node>();
+        }
 
         public GroupNode(string name, string comment) : base(name, comment)
         {
-            Children = new ObservableCollection<Node>();
+            Children = new ObservableCollectionEx<Node>();
         }
         
         public void AddChild(Node node)
         {
+            node.Parent = this;
             Children.Add(node);
             SortChildren();
         }
@@ -34,7 +41,7 @@ namespace TreeMulti.Model
             }
         }
 
-        public ObservableCollection<Node> Children
+        public ObservableCollectionEx<Node> Children
         {
             get => _children;
             set
@@ -50,7 +57,10 @@ namespace TreeMulti.Model
 
         public void SortChildren()
         {
-            Children = new ObservableCollection<Node>(Children.OrderBy(x=>x.GetType().FullName));
+            Children = new ObservableCollectionEx<Node>(
+                Children.OrderBy(x => x.GetType().Name)
+                                  .ThenBy(x => x.Name));
         }
+
     }
 }

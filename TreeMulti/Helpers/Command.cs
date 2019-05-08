@@ -28,6 +28,7 @@ namespace TreeMulti
         {
 
         }
+
         public Command(Action<object> executeAction, Func<object, bool> canExecuteFunc)
         {
             _execute = executeAction;

@@ -5,7 +5,7 @@ using TreeMulti.Interfaces;
 
 namespace TreeMulti
 {
-    class DialogService : IDialogService
+    internal class DialogService : IDialogService
     {
         private readonly Dictionary<Type, FrameworkElement> _dictionary = new Dictionary<Type, FrameworkElement>();
 

@@ -43,15 +43,18 @@ namespace TreeMulti
         {
             element.SetValue(IsItemSelectedProperty, value);
         }
+
         public static bool GetIsItemSelected(UIElement element)
         {
             return (bool)element.GetValue(IsItemSelectedProperty);
         }
+
         public IEnumerable<object> SelectedItems
         {
             get => (IEnumerable<object>)GetValue(SelectedItemsProperty);
             set => SetValue(SelectedItemsProperty, value);
         }
+
         public int SelectCount
         {
             get => (int)GetValue(SelectCountProperty);
@@ -106,6 +109,7 @@ namespace TreeMulti
                     break;
             }
         }
+
         public ItemsControl GetSelectedTreeViewItemParent(TreeViewItem item)
         {
             DependencyObject parent = VisualTreeHelper.GetParent(item);
@@ -115,6 +119,7 @@ namespace TreeMulti
             }
             return parent as ItemsControl;
         }
+
         //Multi
         private void MultiItemChangedInternal(TreeViewItem tvItem)
         {
@@ -226,6 +231,7 @@ namespace TreeMulti
             }
             return itemList;
         }
+
         private List<TreeViewItem> GetTreeViewItemRange(TreeViewItem start, TreeViewItem end)
         {
             var items = GetTreeViewItems(this, false);
@@ -243,5 +249,6 @@ namespace TreeMulti
 
             return rangeCount > 0 ? items.GetRange(rangeStart, rangeCount) : new List<TreeViewItem>();
         }
+
     }
 }

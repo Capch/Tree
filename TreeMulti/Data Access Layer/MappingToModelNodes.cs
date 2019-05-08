@@ -8,10 +8,12 @@ namespace TreeMulti
 {
     public static partial class MappingNodes
     {
+
         public static IEnumerable<Model.Node> ToModel(this IEnumerable<Data.Node> dataTree)
         {
             return dataTree.Select(item => item.ConvertToModel()).ToList();
         }
+
         public static Model.Node ConvertToModel(this Data.Node dataNode)
         {
             switch (dataNode)
@@ -26,22 +28,25 @@ namespace TreeMulti
                     return null;
             }
         }
+
         public static Model.Node1 ConvertToModel([NotNull] this Data.Node1 dataNode)
         {
             if (dataNode == null) throw new ArgumentNullException(nameof(dataNode));
             return new Model.Node1(dataNode.Name, dataNode.Comment, dataNode.Comment2);
         }
+
         public static Model.Node2 ConvertToModel([NotNull] this Data.Node2 dataNode)
         {
             if (dataNode == null) throw new ArgumentNullException(nameof(dataNode));
             return new Model.Node2(dataNode.Name, dataNode.Comment, dataNode.Comment2, dataNode.Comment3);
         }
+
         public static Model.GroupNode ConvertToModel([NotNull] this Data.GroupNode dataNode)
         {
             if (dataNode == null) throw new ArgumentNullException(nameof(dataNode));
             var groupData = new Model.GroupNode(dataNode.Name, dataNode.Comment);
 
-            var children = new ObservableCollection<Model.Node>();
+            var children = new ObservableCollectionEx<Model.Node>();
 
             foreach (var child in dataNode.Children)
             {
@@ -53,5 +58,6 @@ namespace TreeMulti
             groupData.Children = children;
             return groupData;
         }
+
     }
 }

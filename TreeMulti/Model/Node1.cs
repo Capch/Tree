@@ -4,6 +4,11 @@
     {
         private string _comment2;
 
+        public Node1()
+        {
+            
+        }
+
         public Node1(string name, string comment, string comment2) :base(name,comment)
         {
             Comment2 = comment2;
@@ -22,5 +27,11 @@
                 OnPropertyChanged();
             }
         }
+
+        public override bool IsNotEmpty()
+        {
+            return (base.IsNotEmpty() && !string.IsNullOrEmpty(Comment2));
+        }
+
     }
 }
