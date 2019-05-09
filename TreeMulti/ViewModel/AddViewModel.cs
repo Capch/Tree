@@ -21,6 +21,7 @@ namespace TreeMulti.ViewModel
             if (NewNode != null && !NewNode.IsNotEmpty())
             {
                 NewNode.SetDefault();
+                Mode = "Add";
                 OnPropertyChanged(nameof(NewNode));
             }
         }
@@ -46,6 +47,8 @@ namespace TreeMulti.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        public string Mode { get; set; } = "Edit";
 
         private bool IsFieldNotEmpty(object arg)
         {

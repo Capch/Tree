@@ -100,7 +100,7 @@
                     <ColumnDefinition Width="0.5*"/>
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="Add" Command="{Binding AddCommand}" Margin="0,10,5,10" />
+                <Button Grid.Column="0" Content="{Binding Mode}" Command="{Binding AddCommand}" Margin="0,10,5,10" />
                 <Button Grid.Column="1" Content="Cancel" Command="{Binding CancelCommand}" Margin="5,10,0,10" />
             </Grid>
         </Grid>

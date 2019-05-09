@@ -5,6 +5,7 @@ namespace TreeMulti.View
 {
     public partial class MainView : IWindowConfiguration
     {
+
         public MainView()
         {
             InitializeComponent();         
@@ -19,5 +20,6 @@ namespace TreeMulti.View
         {
             return "Tree test";
         }
+
     }
 }

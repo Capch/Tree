@@ -5,6 +5,7 @@ namespace TreeMulti.View
 {
     public partial class AddNodeView : IWindowConfiguration
     {
+
         public AddNodeView()
         {
             InitializeComponent();
@@ -12,12 +13,13 @@ namespace TreeMulti.View
 
         public Size GetWindowSize()
         {
-           return new Size(300,600);
+           return new Size(300,400);
         }
 
         public string GetWindowTitle()
         {
             return "Add/Edit node";
         }
+
     }
 }

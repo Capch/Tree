@@ -77,6 +77,7 @@ namespace TreeMulti.Model
             return Name+Comment;
         }
         
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
