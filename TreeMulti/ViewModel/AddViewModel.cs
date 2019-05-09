@@ -12,11 +12,13 @@ namespace TreeMulti.ViewModel
         public AddViewModel(Node item = null)
         {
             AddCommand = new Command(AddNode, IsFieldNotEmpty);
+            CancelCommand = new Command(Cancel);
             NewNode = (Node) item?.Clone();
             OutNode = null;
         }
 
         public ICommand AddCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
 
         public Node NewNode
         {
@@ -45,6 +47,12 @@ namespace TreeMulti.ViewModel
         private void AddNode(object obj)
         {
             OutNode = NewNode;
+            OnRequestClose();
+        }
+
+        private void Cancel(object obj)
+        {
+            OutNode = null;
             OnRequestClose();
         }
 

@@ -21,7 +21,6 @@
     </UserControl.Resources>
 
     <StackPanel>
-
         <ContentControl Content="{Binding NewNode}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type model:GroupNode}">
@@ -57,7 +56,10 @@
             </ContentControl.Resources>
         </ContentControl>
 
-        <Button Content="Add" Command="{Binding AddCommand}"/>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Add" Command="{Binding AddCommand}"/>
+            <Button Content="Cancel" Command="{Binding CancelCommand}"/>
+        </StackPanel>
     </StackPanel>
 
 </UserControl>
