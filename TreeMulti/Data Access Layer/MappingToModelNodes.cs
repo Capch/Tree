@@ -10,10 +10,10 @@ namespace TreeMulti
 
         public static IEnumerable<Model.Node> ToModel(this IEnumerable<Data.Node> dataTree)
         {
-            return dataTree.Select(item => item.ConvertToModel()).ToList();
+            return dataTree?.Select(item => item.ConvertToModel()).ToList();
         }
 
-        public static Model.Node ConvertToModel(this Data.Node dataNode)
+        static Model.Node ConvertToModel(this Data.Node dataNode)
         {
             switch (dataNode)
             {
@@ -28,19 +28,19 @@ namespace TreeMulti
             }
         }
 
-        public static Model.Node1 ConvertToModel([NotNull] this Data.Node1 dataNode)
+        static Model.Node1 ConvertToModel([NotNull] this Data.Node1 dataNode)
         {
             if (dataNode == null) throw new ArgumentNullException(nameof(dataNode));
             return new Model.Node1(dataNode.Name, dataNode.Comment, dataNode.Comment2);
         }
 
-        public static Model.Node2 ConvertToModel([NotNull] this Data.Node2 dataNode)
+        static Model.Node2 ConvertToModel([NotNull] this Data.Node2 dataNode)
         {
             if (dataNode == null) throw new ArgumentNullException(nameof(dataNode));
             return new Model.Node2(dataNode.Name, dataNode.Comment, dataNode.Comment2, dataNode.Comment3);
         }
 
-        public static Model.GroupNode ConvertToModel([NotNull] this Data.GroupNode dataNode)
+        static Model.GroupNode ConvertToModel([NotNull] this Data.GroupNode dataNode)
         {
             if (dataNode == null) throw new ArgumentNullException(nameof(dataNode));
             var groupData = new Model.GroupNode(dataNode.Name, dataNode.Comment);

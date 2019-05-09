@@ -12,6 +12,7 @@ namespace TreeMulti.Test
     public class MainViewModelTest
     {
         private MainViewModel _addViewModel;
+        private List<object> _selectedItems;
 
         [SetUp]
         public void Init()
@@ -19,17 +20,19 @@ namespace TreeMulti.Test
             var mock = new Mock<ITreeRepository>();
             mock.Setup(a => a.GetTree()).Returns(new ObservableCollection<Node>());
             _addViewModel = new MainViewModel(mock.Object);
+            _selectedItems = new List<object>();
         }
 
-        public void AddCommand_SelectedNothing_Added()
+        [Test]
+        public void DeleteCommand_SelectedNothing_Added()
         {
-            _addViewModel.SelectedItems = new List<object>();
             var count = _addViewModel.Tree.Count;
 
-            _addViewModel.AddCommand.Execute(NodeTypes.Node1);
+            _addViewModel.DeleteCommand.Execute(_addViewModel.SelectedItems);
 
-            Assert.IsTrue(_addViewModel.Tree.Count == count + 1);
+            Assert.IsTrue(_addViewModel.Tree.Count == count);
         }
+
 
     }
 }
