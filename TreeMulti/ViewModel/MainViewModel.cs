@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using TreeMulti.Interfaces;
 using TreeMulti.Model;
 
@@ -180,7 +177,7 @@ namespace TreeMulti.ViewModel
 
             if (dialogRes != null && addViewModel.NewNode.IsNotEmpty())
             {
-                return addViewModel.NewNode;
+                return addViewModel.OutNode;
             }
             else
             {
@@ -208,6 +205,7 @@ namespace TreeMulti.ViewModel
                 }
             }
         }
+
         private void ResetInit(object obj)
         {
             var g1 = new GroupNode("group1", "comment1");

@@ -33,5 +33,10 @@
             return (base.IsNotEmpty() && !string.IsNullOrEmpty(Comment2));
         }
 
+        public override object Clone()
+        {
+            return new Node1(this.Name, this.Comment, this.Comment2) { Parent = this.Parent };
+        }
+
     }
 }

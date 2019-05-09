@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using TreeMulti.Interfaces;
 using TreeMulti.Model;
 
@@ -9,17 +8,15 @@ namespace TreeMulti.ViewModel
     {
 
         private Node _newNode;
-
+        private Node _outNode;
         public AddViewModel(Node item = null)
         {
             AddCommand = new Command(AddNode, IsFieldNotEmpty);
-            NewNode = item;
+            NewNode = (Node) item?.Clone();
+            OutNode = null;
         }
 
-        private bool IsFieldNotEmpty(object arg)
-        {
-            return NewNode.IsNotEmpty();
-        }
+        public ICommand AddCommand { get; set; }
 
         public Node NewNode
         {
@@ -30,10 +27,24 @@ namespace TreeMulti.ViewModel
                 OnPropertyChanged();
             }
         }
-        public ICommand AddCommand { get; set; }
+        public Node OutNode
+        {
+            get => _outNode;
+            set
+            {
+                _outNode = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool IsFieldNotEmpty(object arg)
+        {
+            return NewNode.IsNotEmpty();
+        }
 
         private void AddNode(object obj)
         {
+            OutNode = NewNode;
             OnRequestClose();
         }
 

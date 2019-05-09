@@ -51,5 +51,10 @@
                                       && !string.IsNullOrEmpty(Comment3));
         }
 
+        public override object Clone()
+        {
+            return new Node2(this.Name, this.Comment, this.Comment2, this.Comment3) {Parent = this.Parent};
+        }
+
     }
 }

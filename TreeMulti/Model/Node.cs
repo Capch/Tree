@@ -1,10 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TreeMulti.Annotations;
 
 namespace TreeMulti.Model
 {
-    public abstract class Node : INotifyPropertyChanged
+    public abstract class Node : INotifyPropertyChanged, ICloneable
     {
         private string _name;
         private string _comment;
@@ -63,12 +64,6 @@ namespace TreeMulti.Model
                 OnPropertyChanged();
             }
         }
-        
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public virtual bool IsNotEmpty()
         {
@@ -77,8 +72,15 @@ namespace TreeMulti.Model
 
         public override string ToString()
         {
-            return Name.ToString()+Comment.ToString();
+            return Name+Comment;
+        }
+        
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public abstract object Clone();
     }
 }

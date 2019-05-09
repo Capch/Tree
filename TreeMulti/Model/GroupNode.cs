@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 
 namespace TreeMulti.Model
 {
@@ -60,6 +59,10 @@ namespace TreeMulti.Model
             Children = new ObservableCollectionEx<Node>(
                 Children.OrderBy(x => x.GetType().Name)
                                   .ThenBy(x => x.Name));
+        }
+        public override object Clone()
+        {
+            return new GroupNode(this.Name, this.Comment) { Parent = this.Parent };
         }
 
     }
