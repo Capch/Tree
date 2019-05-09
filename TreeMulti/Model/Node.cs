@@ -70,6 +70,8 @@ namespace TreeMulti.Model
             return (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Comment));
         }
 
+        public abstract void SetDefault();
+
         public override string ToString()
         {
             return Name+Comment;

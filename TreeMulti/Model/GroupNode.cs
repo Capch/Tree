@@ -60,6 +60,13 @@ namespace TreeMulti.Model
                 Children.OrderBy(x => x.GetType().Name)
                                   .ThenBy(x => x.Name));
         }
+
+        public override void SetDefault()
+        {
+            this.Name = "Group Name";
+            this.Comment = "Some comment";
+        }
+
         public override object Clone()
         {
             return new GroupNode(this.Name, this.Comment) { Parent = this.Parent };

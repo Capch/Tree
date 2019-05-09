@@ -9,12 +9,20 @@ namespace TreeMulti.ViewModel
 
         private Node _newNode;
         private Node _outNode;
+
         public AddViewModel(Node item = null)
         {
             AddCommand = new Command(AddNode, IsFieldNotEmpty);
             CancelCommand = new Command(Cancel);
-            NewNode = (Node) item?.Clone();
+
+            NewNode = (Node)item?.Clone();
             OutNode = null;
+
+            if (NewNode != null && !NewNode.IsNotEmpty())
+            {
+                NewNode.SetDefault();
+                OnPropertyChanged(nameof(NewNode));
+            }
         }
 
         public ICommand AddCommand { get; set; }
