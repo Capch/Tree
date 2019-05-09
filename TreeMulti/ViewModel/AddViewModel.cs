@@ -57,7 +57,7 @@ namespace TreeMulti.ViewModel
 
         private void AddNode(object obj)
         {
-            OutNode = NewNode;
+            OutNode = NewNode.IsNotEmpty() ? NewNode : null;
             OnRequestClose();
         }
 

@@ -23,20 +23,25 @@ namespace TreeMulti
 
         public bool? ShowDialog(ViewModelBase viewModel)
         {
-            bool? result = null;
-            if (_dictionary.TryGetValue(viewModel.GetType(), out var view))
+            using (viewModel)
             {
-                view.DataContext = viewModel;
-                var window = new DialogBase(view)
+                bool? result = null;
+                if (_dictionary.TryGetValue(viewModel.GetType(), out var view))
                 {
-                    Title = (view as IWindowConfiguration)?.GetWindowTitle(),
-                    Height = ((IWindowConfiguration) view).GetWindowSize().Height,
-                    Width = ((IWindowConfiguration) view).GetWindowSize().Width
-                };
-                viewModel.RequestClose += (sender, e) => window.Close();
-                result = window.ShowDialog();
+                    view.DataContext = viewModel;
+                    var window = new DialogBase(view)
+                    {
+                        Title = (view as IWindowConfiguration)?.GetWindowTitle(),
+                        Height = ((IWindowConfiguration)view).GetWindowSize().Height,
+                        Width = ((IWindowConfiguration)view).GetWindowSize().Width
+                    };
+                    viewModel.RequestClose += (sender, e) => window.Close();
+                    window.Closed += viewModel.OnClosing;
+                    result = window.ShowDialog();
+                }
+                return result;
             }
-            return result;
         }
+
     }
 }

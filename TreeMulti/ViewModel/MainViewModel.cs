@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using TreeMulti.Interfaces;
 using TreeMulti.Model;
 
@@ -10,10 +12,11 @@ namespace TreeMulti.ViewModel
     public class MainViewModel : ViewModelBase
     {
 
-        private readonly ITreeRepository _repository;
+        private ITreeRepository _repository;
         private int _count;
         private IEnumerable<object> _selectedItems;
         private ObservableCollectionEx<Node> _tree;
+        private bool _isTreeChanged = false;
 
         public MainViewModel(ITreeRepository treeRepository)
         {
@@ -63,6 +66,7 @@ namespace TreeMulti.ViewModel
             }
         }
 
+
         private bool IsSelectedOneOrNothing(object obj)
         {
             if (SelectedItems == null) return true;
@@ -78,6 +82,7 @@ namespace TreeMulti.ViewModel
             if (SelectedItems == null) return false;
             return SelectedItems.Any();
         }
+
 
         private void AddNewNode(object obj)
         {
@@ -134,6 +139,8 @@ namespace TreeMulti.ViewModel
                     }
                     break;
             }
+
+            TreeChanged();
         }
 
         private void EditNode(object obj)
@@ -167,6 +174,7 @@ namespace TreeMulti.ViewModel
                 var index = Tree.IndexOf(item);
                 Tree[index] = result;
             }
+            TreeChanged();
         }
 
         private Node CatchNode(Node baseNode)
@@ -188,7 +196,7 @@ namespace TreeMulti.ViewModel
         private void DeleteNodes(object obj)
         {
             var selectList = ((IEnumerable<object>)obj).OfType<Node>().ToList();
-
+            if (selectList.Count < 1) return;
             for (int j = 0; j < selectList.Count; j++)
             {
                 for (int i = 0; i < Tree.Count; i++)
@@ -204,6 +212,7 @@ namespace TreeMulti.ViewModel
                     }
                 }
             }
+            TreeChanged();
         }
 
         private void ResetInit(object obj)
@@ -232,6 +241,30 @@ namespace TreeMulti.ViewModel
 
             Tree = new ObservableCollectionEx<Node> { g1, g2 };
             _repository.SaveTree(Tree.ToData());
+            TreeChanged();
+        }
+
+        private void TreeChanged()
+        {
+            if (!_isTreeChanged)
+            {
+                _isTreeChanged = true;
+            }
+        }
+
+        public override void OnClosing(object sender, EventArgs eventArgs)
+        {
+            if (_isTreeChanged)
+            {
+                _repository.SaveTree(Tree.ToData());
+            }
+            base.OnClosing(sender, eventArgs);
+        }
+
+        public override void Dispose()
+        {
+            _repository = null;
+            base.Dispose();
         }
 
     }

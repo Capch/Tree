@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace TreeMulti.Data
+﻿namespace TreeMulti.Data
 {
     public abstract class Node 
     {
