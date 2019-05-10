@@ -2,7 +2,7 @@
 
 namespace TreeMulti.Interfaces
 {
-    internal interface IWindowConfiguration
+    public interface IWindowConfiguration
     {
         Size GetWindowSize();
         string GetWindowTitle();

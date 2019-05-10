@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using TreeMulti.Interfaces;
 
@@ -14,5 +15,6 @@ namespace TreeMulti
             DataContext = this;
         }
         public FrameworkElement ContentElement { get; set; }
+
     }
 }

@@ -38,8 +38,8 @@
         <local:MultiSelectTreeView Grid.Row="0" SelectCount="{Binding Count}" SelectedItems="{Binding SelectedItems, 
             UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Tree, UpdateSourceTrigger=PropertyChanged}" 
                                    SelectMode="{x:Static SelectionMode.Extended}"
-                                   ItemContainerStyle="{StaticResource MultiSelectTreeViewItemStyle}" HorizontalContentAlignment="Stretch" 
-                                   Padding="10" Margin="10" FontSize="16">
+                                   ItemContainerStyle="{StaticResource MultiSelectTreeViewItemStyle}" 
+                                   HorizontalContentAlignment="Stretch" Padding="10" Margin="10" FontSize="16">
             <local:MultiSelectTreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type model:GroupNode}" ItemsSource="{Binding Children}" >
                     <StackPanel Orientation="Horizontal">
@@ -70,13 +70,6 @@
         </local:MultiSelectTreeView>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
-            <!--<Menu >
-                <MenuItem Header="Add" Height="30" Width="100">
-                    <MenuItem Header="Add Group" Command="{Binding AddCommand}" CommandParameter="{x:Static local:NodeTypes.GroupNode}" />
-                    <MenuItem Header="Add Node 1" Command="{Binding AddCommand}" CommandParameter="{x:Static local:NodeTypes.Node1}"/>
-                    <MenuItem Header="Add Node 2" Command="{Binding AddCommand}" CommandParameter="{x:Static local:NodeTypes.Node2}"/>
-                </MenuItem>
-            </Menu>-->
             <xctk:DropDownButton Content="Add" Margin="15" Height="30" Width="90" >
                 <xctk:DropDownButton.DropDownContent>
                     <StackPanel Orientation="Vertical" >
@@ -89,8 +82,6 @@
                     </StackPanel>
                 </xctk:DropDownButton.DropDownContent>
             </xctk:DropDownButton>
-
-
             <Button Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItems}" Content="Edit"/>
             <Button Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItems}" Content="{Binding Count}" 
                     ContentStringFormat="Delete ({0})"/>

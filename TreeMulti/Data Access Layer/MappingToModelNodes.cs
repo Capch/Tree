@@ -7,7 +7,6 @@ namespace TreeMulti
 {
     public static partial class MappingNodes
     {
-
         public static IEnumerable<Model.Node> ToModel(this IEnumerable<Data.Node> dataTree)
         {
             return dataTree?.Select(item => item.ConvertToModel()).ToList();

@@ -17,16 +17,6 @@ namespace TreeMulti
             using (new FileStream(_filepath, FileMode.OpenOrCreate)) { }
         }
 
-        public IEnumerable<Node> GetTree()
-        {
-            return ReadJson();
-        }
-
-        public void SaveTree(IEnumerable<Node> tree)
-        {
-            WriteJson(tree);
-        }
-
         private IEnumerable<Node> ReadJson()
         {
             IEnumerable<Node> cards;
@@ -56,6 +46,16 @@ namespace TreeMulti
                         Formatting = Formatting.Indented
                     }));
             }
+        }
+        
+        public IEnumerable<Node> GetTree()
+        {
+            return ReadJson();
+        }
+
+        public void SaveTree(IEnumerable<Node> tree)
+        {
+            WriteJson(tree);
         }
 
     }

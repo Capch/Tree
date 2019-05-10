@@ -2,7 +2,7 @@
 
 namespace TreeMulti.Interfaces
 {
-    internal interface ICloseable
+    public interface ICloseable
     {
         event EventHandler<EventArgs> RequestClose;
     }

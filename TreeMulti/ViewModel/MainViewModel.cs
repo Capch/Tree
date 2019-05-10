@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using TreeMulti.Interfaces;
 using TreeMulti.Model;
 
@@ -13,12 +12,14 @@ namespace TreeMulti.ViewModel
     {
 
         private ITreeRepository _repository;
+        private IDialogService _dialog;
+        private readonly Func<Node, AddViewModel> _addEditVmFunc;
         private int _count;
         private IEnumerable<object> _selectedItems;
         private ObservableCollectionEx<Node> _tree;
         private bool _isTreeChanged = false;
 
-        public MainViewModel(ITreeRepository treeRepository)
+        public MainViewModel(ITreeRepository treeRepository, IDialogService dialogService, Func<Node, AddViewModel> addEditVmFunc)
         {
             AddCommand = new Command(AddNewNode, IsSelectedOneOrNothing);
             DeleteCommand = new Command(DeleteNodes, IsSelectedMany);
@@ -26,7 +27,8 @@ namespace TreeMulti.ViewModel
             InitCommand = new Command(ResetInit);
 
             _repository = treeRepository;
-
+            _dialog = dialogService;
+            _addEditVmFunc = addEditVmFunc;
             if (_repository.GetTree().ToModel() is IEnumerable<Node> nodes)
             {
                 Tree = new ObservableCollectionEx<Node>(nodes);
@@ -83,6 +85,20 @@ namespace TreeMulti.ViewModel
             return SelectedItems.Any();
         }
 
+        public virtual Node CreateNodeForAddEditVM(NodeTypes nodeTypes)
+        {
+            switch (nodeTypes)
+            {
+                case NodeTypes.GroupNode:
+                   return new GroupNode();
+                case NodeTypes.Node1:
+                    return new Node1();
+                case NodeTypes.Node2:
+                    return new Node2();
+                default:
+                    return null;
+            }
+        }
 
         private void AddNewNode(object obj)
         {
@@ -98,22 +114,17 @@ namespace TreeMulti.ViewModel
 
 
             Node resultNode;
-            var type = obj is NodeTypes types ? types : NodeTypes.GroupNode;
-
-            switch (type)
+            NodeTypes type;
+            if (obj is NodeTypes types)
             {
-                case NodeTypes.GroupNode:
-                    resultNode = CatchNode(new GroupNode());
-                    break;
-                case NodeTypes.Node1:
-                    resultNode = CatchNode(new Node1());
-                    break;
-                case NodeTypes.Node2:
-                    resultNode = CatchNode(new Node2());
-                    break;
-                default:
-                    return;
+                type = types;
             }
+            else
+            {
+                return;
+            }
+            
+            resultNode = CatchNode(_addEditVmFunc, CreateNodeForAddEditVM(type));
 
             if (resultNode == null)
             {
@@ -160,13 +171,13 @@ namespace TreeMulti.ViewModel
             switch (item)
             {
                 case GroupNode groupNode:
-                    result = CatchNode(groupNode);
+                    result = CatchNode(_addEditVmFunc, groupNode);
                     break;
                 case Node1 node1:
-                    result = CatchNode(node1);
+                    result = CatchNode(_addEditVmFunc, node1);
                     break;
                 case Node2 node2:
-                    result = CatchNode(node2);
+                    result = CatchNode(_addEditVmFunc, node2);
                     break;
             }
 
@@ -189,15 +200,14 @@ namespace TreeMulti.ViewModel
             TreeChanged();
         }
 
-        private Node CatchNode(Node baseNode)
+        private Node CatchNode(Func<Node, AddViewModel> vmFunc, Node baseNode)
         {
-            var addViewModel = new AddViewModel(baseNode);
-            var dialog = ((App)Application.Current).DialogService;
-            var dialogRes = dialog.ShowDialog(addViewModel);
+            var addViewModel = vmFunc.Invoke(baseNode);
+            var dialogRes = _dialog.ShowDialog(addViewModel);
 
-            if (dialogRes != null && addViewModel.NewNode.IsNotEmpty())
+            if (dialogRes == true && addViewModel.NewNode.IsNotEmpty())
             {
-                return addViewModel.OutNode;
+                return addViewModel.NewNode;
             }
 
             return null;

@@ -21,7 +21,7 @@ namespace TreeMulti
             }
         }
 
-        public bool? ShowDialog(ViewModelBase viewModel)
+        public virtual bool? ShowDialog(ViewModelBase viewModel)
         {
             using (viewModel)
             {
@@ -38,6 +38,7 @@ namespace TreeMulti
                     viewModel.RequestClose += (sender, e) => window.Close();
                     window.Closed += viewModel.OnClosing;
                     result = window.ShowDialog();
+                    result = viewModel.Result;
                 }
                 return result;
             }

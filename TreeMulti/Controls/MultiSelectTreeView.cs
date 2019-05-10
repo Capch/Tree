@@ -112,7 +112,7 @@ namespace TreeMulti
 
         public ItemsControl GetSelectedTreeViewItemParent(TreeViewItem item)
         {
-            DependencyObject parent = VisualTreeHelper.GetParent(item);
+            var parent = VisualTreeHelper.GetParent(item);
             while (!(parent is TreeViewItem || parent is TreeView))
             {
                 parent = VisualTreeHelper.GetParent(parent);

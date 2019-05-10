@@ -2,7 +2,6 @@
 {
     public abstract class Node 
     {
-
         protected Node() { }
 
         protected Node(string name, string comment)

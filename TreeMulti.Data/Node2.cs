@@ -2,7 +2,6 @@
 {
     public class Node2 : Node
     {
-
         public Node2() { }
 
         public Node2(string name, string comment, string comment2, string comment3) : base(name, comment)

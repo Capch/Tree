@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using TreeMulti.Interfaces;
 using TreeMulti.Model;
 
@@ -22,7 +23,7 @@ namespace TreeMulti.ViewModel
             {
                 NewNode.SetDefault();
                 Mode = "Add";
-            }
+                }
         }
 
         public ICommand AddCommand { get; set; }
@@ -57,12 +58,14 @@ namespace TreeMulti.ViewModel
         private void AddNode(object obj)
         {
             OutNode = NewNode.IsNotEmpty() ? NewNode : null;
+            Result = true;
             OnRequestClose();
         }
 
         private void Cancel(object obj)
         {
             OutNode = null;
+            Result = false;
             OnRequestClose();
         }
 

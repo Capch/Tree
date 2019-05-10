@@ -41,6 +41,7 @@ namespace TreeMulti.Test
             Assert.IsTrue(viewmodel.OutNode != null);
             Assert.IsTrue(viewmodel.OutNode.IsNotEmpty());
         }
+
         [Test]
         public void Result_CancelPressed_NotNullOutput()
         {

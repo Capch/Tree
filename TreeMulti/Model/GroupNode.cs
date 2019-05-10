@@ -21,7 +21,7 @@ namespace TreeMulti.Model
         {
             node.Parent = this;
             Children.Add(node);
-            SortChildren();
+            Children.Sort();
         }
 
         public void Delete(Node node)
@@ -52,13 +52,6 @@ namespace TreeMulti.Model
                 _children = value;
                 OnPropertyChanged();
             }
-        }
-
-        public void SortChildren()
-        {
-            Children = new ObservableCollectionEx<Node>(
-                Children.OrderBy(x => x.GetType().Name)
-                                  .ThenBy(x => x.Name));
         }
 
         public override void SetDefault()
