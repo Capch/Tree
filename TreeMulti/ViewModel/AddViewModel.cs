@@ -22,7 +22,6 @@ namespace TreeMulti.ViewModel
             {
                 NewNode.SetDefault();
                 Mode = "Add";
-                OnPropertyChanged(nameof(NewNode));
             }
         }
 

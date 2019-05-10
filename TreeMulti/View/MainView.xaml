@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:TreeMulti" 
         xmlns:viewModel="clr-namespace:TreeMulti.ViewModel" 
         xmlns:model="clr-namespace:TreeMulti.Model"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance d:Type={x:Type viewModel:MainViewModel}}">
 
@@ -69,13 +70,26 @@
         </local:MultiSelectTreeView>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
-            <Menu >
+            <!--<Menu >
                 <MenuItem Header="Add" Height="30" Width="100">
                     <MenuItem Header="Add Group" Command="{Binding AddCommand}" CommandParameter="{x:Static local:NodeTypes.GroupNode}" />
                     <MenuItem Header="Add Node 1" Command="{Binding AddCommand}" CommandParameter="{x:Static local:NodeTypes.Node1}"/>
                     <MenuItem Header="Add Node 2" Command="{Binding AddCommand}" CommandParameter="{x:Static local:NodeTypes.Node2}"/>
                 </MenuItem>
-            </Menu>
+            </Menu>-->
+            <xctk:DropDownButton Content="Add" Margin="15" Height="30" Width="90" >
+                <xctk:DropDownButton.DropDownContent>
+                    <StackPanel Orientation="Vertical" >
+                        <Button Content="Add Group" Command="{Binding AddCommand}" 
+                                CommandParameter="{x:Static local:NodeTypes.GroupNode}" Margin="0" />
+                        <Button Content="Add Node 1" Command="{Binding AddCommand}" 
+                                CommandParameter="{x:Static local:NodeTypes.Node1}" Margin="0" />
+                        <Button Content="Add Node 2" Command="{Binding AddCommand}" 
+                                CommandParameter="{x:Static local:NodeTypes.Node2}" Margin="0" />
+                    </StackPanel>
+                </xctk:DropDownButton.DropDownContent>
+            </xctk:DropDownButton>
+
 
             <Button Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItems}" Content="Edit"/>
             <Button Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItems}" Content="{Binding Count}" 

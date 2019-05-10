@@ -53,7 +53,7 @@
 
         public override void SetDefault()
         {
-            this.Name = "Node1 Name";
+            this.Name = "Node2 Name";
             this.Comment = "Some comment";
             this.Comment2 = "Some comment2";
             this.Comment3 = "Some comment3";

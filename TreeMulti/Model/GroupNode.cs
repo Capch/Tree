@@ -69,7 +69,7 @@ namespace TreeMulti.Model
 
         public override object Clone()
         {
-            return new GroupNode(this.Name, this.Comment) { Parent = this.Parent };
+            return new GroupNode(this.Name, this.Comment) { Parent = this.Parent, Children = this.Children};
         }
 
     }

@@ -6,8 +6,7 @@ using System.Linq;
 
 namespace TreeMulti
 {
-    [Serializable]
-    public partial class ObservableCollectionEx<T> : ObservableCollection<T>
+    public class ObservableCollectionEx<T> : ObservableCollection<T>
      where T : INotifyPropertyChanged
     {
         public ObservableCollectionEx() : base() { }
@@ -85,7 +84,9 @@ namespace TreeMulti
 
         public void Sort()
         {
-            var items = Items.ToList().OrderBy(x=>x.GetType().Name).ThenBy(x=>x.ToString());
+            var items = Items.ToList()
+                             .OrderBy(x=>x.GetType().Name)
+                             .ThenBy(x=>x.ToString());
             ClearItems();
             foreach (var item in items)
             {

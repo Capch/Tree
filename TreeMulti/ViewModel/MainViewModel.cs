@@ -115,7 +115,10 @@ namespace TreeMulti.ViewModel
                     return;
             }
 
-            if (resultNode == null) return;
+            if (resultNode == null)
+            {
+                return;
+            }
 
             switch (item)
             {
@@ -145,6 +148,11 @@ namespace TreeMulti.ViewModel
 
         private void EditNode(object obj)
         {
+            if (!(obj is IEnumerable<object>) || ((IEnumerable<object>) obj).Count() != 1)
+            {
+                return;
+            }
+
             var item = (Node)((IEnumerable<object>)obj).First();
 
             Node result = null;
@@ -161,7 +169,11 @@ namespace TreeMulti.ViewModel
                     result = CatchNode(node2);
                     break;
             }
-            if (result == null) return;
+
+            if (result == null)
+            {
+                return;
+            }
             if (item.Parent != null)
             {
                 var parent = (GroupNode)item.Parent;
@@ -187,19 +199,21 @@ namespace TreeMulti.ViewModel
             {
                 return addViewModel.OutNode;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private void DeleteNodes(object obj)
         {
+            if (!(obj is IEnumerable<object>))
+            {
+                return;
+            }
             var selectList = ((IEnumerable<object>)obj).OfType<Node>().ToList();
             if (selectList.Count < 1) return;
-            for (int j = 0; j < selectList.Count; j++)
+            for (var j = 0; j < selectList.Count; j++)
             {
-                for (int i = 0; i < Tree.Count; i++)
+                for (var i = 0; i < Tree.Count; i++)
                 {
                     if (Tree[i] == selectList[j])
                     {
