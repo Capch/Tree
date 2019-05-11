@@ -9,7 +9,6 @@ namespace TreeMulti.ViewModel
     {
 
         private Node _newNode;
-        private Node _outNode;
 
         public AddViewModel(Node item = null)
         {
@@ -17,33 +16,23 @@ namespace TreeMulti.ViewModel
             CancelCommand = new Command(Cancel);
 
             NewNode = (Node)item?.Clone();
-            OutNode = null;
 
             if (NewNode != null && !NewNode.IsNotEmpty())
             {
                 NewNode.SetDefault();
                 Mode = "Add";
-                }
+            }
         }
 
         public ICommand AddCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        public Node NewNode
+        public virtual Node NewNode
         {
             get => _newNode;
             set
             {
                 _newNode = value;
-                OnPropertyChanged();
-            }
-        }
-        public Node OutNode
-        {
-            get => _outNode;
-            set
-            {
-                _outNode = value;
                 OnPropertyChanged();
             }
         }
@@ -57,14 +46,12 @@ namespace TreeMulti.ViewModel
 
         private void AddNode(object obj)
         {
-            OutNode = NewNode.IsNotEmpty() ? NewNode : null;
             Result = true;
             OnRequestClose();
         }
 
         private void Cancel(object obj)
         {
-            OutNode = null;
             Result = false;
             OnRequestClose();
         }

@@ -13,7 +13,7 @@ namespace TreeMulti
             return modelTree?.Select(item => item.ConvertToData()).ToList();
         }
 
-        static Data.Node ConvertToData(this Model.Node modelNode)
+        private static Data.Node ConvertToData(this Model.Node modelNode)
         {
             switch (modelNode)
             {
@@ -28,7 +28,7 @@ namespace TreeMulti
             }
         }
 
-        static Data.Node1 ConvertToData([NotNull] this Model.Node1 modelNode)
+        private static Data.Node1 ConvertToData([NotNull] this Model.Node1 modelNode)
         {
             if (modelNode == null)
             {
@@ -37,7 +37,7 @@ namespace TreeMulti
             return new Data.Node1(modelNode.Name, modelNode.Comment, modelNode.Comment2);
         }
 
-        static Data.Node2 ConvertToData([NotNull] this Model.Node2 modelNode)
+        private static Data.Node2 ConvertToData([NotNull] this Model.Node2 modelNode)
         {
             if (modelNode == null)
             {
@@ -46,7 +46,7 @@ namespace TreeMulti
             return new Data.Node2(modelNode.Name, modelNode.Comment, modelNode.Comment2, modelNode.Comment3);
         }
 
-        static Data.GroupNode ConvertToData([NotNull] this Model.GroupNode modelNode)
+        private static Data.GroupNode ConvertToData([NotNull] this Model.GroupNode modelNode)
         {
             if (modelNode == null)
             {

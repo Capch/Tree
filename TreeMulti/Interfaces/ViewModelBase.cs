@@ -8,7 +8,8 @@ namespace TreeMulti.Interfaces
     {
         public event EventHandler<EventArgs> RequestClose;
         public event PropertyChangedEventHandler PropertyChanged;
-        public bool Result { set; get; } = false;
+
+        public virtual bool Result { set; get; } = false;
 
         public void OnPropertyChanged([CallerMemberName]string prop = null)
         {

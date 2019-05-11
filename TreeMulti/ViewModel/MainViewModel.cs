@@ -12,7 +12,7 @@ namespace TreeMulti.ViewModel
     {
 
         private ITreeRepository _repository;
-        private IDialogService _dialog;
+        private readonly IDialogService _dialog;
         private readonly Func<Node, AddViewModel> _addEditVmFunc;
         private int _count;
         private IEnumerable<object> _selectedItems;
@@ -29,9 +29,10 @@ namespace TreeMulti.ViewModel
             _repository = treeRepository;
             _dialog = dialogService;
             _addEditVmFunc = addEditVmFunc;
+
             if (_repository.GetTree().ToModel() is IEnumerable<Node> nodes)
             {
-                Tree = new ObservableCollectionEx<Node>(nodes);
+                Tree = new ObservableCollectionEx<Node>(nodes.ToList());
             }
         }
 
@@ -85,7 +86,7 @@ namespace TreeMulti.ViewModel
             return SelectedItems.Any();
         }
 
-        public virtual Node CreateNodeForAddEditVM(NodeTypes nodeTypes)
+        public virtual Node CreateNodeForAddEditVm(NodeTypes nodeTypes)
         {
             switch (nodeTypes)
             {
@@ -111,8 +112,7 @@ namespace TreeMulti.ViewModel
             {
                 item = (Node)SelectedItems.ToList().FirstOrDefault();
             }
-
-
+            
             Node resultNode;
             NodeTypes type;
             if (obj is NodeTypes types)
@@ -124,7 +124,7 @@ namespace TreeMulti.ViewModel
                 return;
             }
             
-            resultNode = CatchNode(_addEditVmFunc, CreateNodeForAddEditVM(type));
+            resultNode = CatchNode(_addEditVmFunc, CreateNodeForAddEditVm(type));
 
             if (resultNode == null)
             {
@@ -153,7 +153,6 @@ namespace TreeMulti.ViewModel
                     }
                     break;
             }
-
             TreeChanged();
         }
 
@@ -236,6 +235,9 @@ namespace TreeMulti.ViewModel
                     }
                 }
             }
+
+            Count = 0;
+            SelectedItems=new List<object>();
             TreeChanged();
         }
 

@@ -40,6 +40,7 @@ namespace TreeMulti.Test
 
             Assert.IsTrue(viewmodel.OutNode != null);
             Assert.IsTrue(viewmodel.OutNode.IsNotEmpty());
+            Assert.IsTrue(viewmodel.Result);
         }
 
         [Test]
@@ -50,8 +51,8 @@ namespace TreeMulti.Test
             var viewmodel = new AddViewModel(node);
             node.SetDefault();
             viewmodel.CancelCommand.Execute(new object());
-
-            Assert.IsTrue(viewmodel.OutNode == null);
+            
+            Assert.IsFalse(viewmodel.Result);
 
         }
 

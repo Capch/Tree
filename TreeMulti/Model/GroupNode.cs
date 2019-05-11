@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace TreeMulti.Model
+﻿namespace TreeMulti.Model
 {
     public class GroupNode : Node
     {
