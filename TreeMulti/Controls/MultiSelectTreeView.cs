@@ -74,12 +74,12 @@ namespace TreeMulti
         {
             var selectedTreeViewItems = GetTreeViewItems(this, true).Where(GetIsItemSelected);
             var selectedModelItems = selectedTreeViewItems.Select(treeViewItem => treeViewItem.Header)
-                                                          .ToList(); 
-    
+                                                          .ToList();
+
             SelectedItems = selectedModelItems;
             SelectCount = selectedModelItems.Count;
         }
-
+        
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
         {
             base.OnPreviewMouseDown(e);

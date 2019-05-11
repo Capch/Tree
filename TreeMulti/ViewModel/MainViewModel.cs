@@ -23,7 +23,7 @@ namespace TreeMulti.ViewModel
         {
             AddCommand = new Command(AddNewNode, IsSelectedOneOrNothing);
             DeleteCommand = new Command(DeleteNodes, IsSelectedMany);
-            EditCommand = new Command(EditNode, IsSelectedOne);
+            EditCommand = new Command(EditNodeExecute, IsSelectedOne);
             InitCommand = new Command(ResetInit);
 
             _repository = treeRepository;
@@ -156,7 +156,7 @@ namespace TreeMulti.ViewModel
             TreeChanged();
         }
 
-        private void EditNode(object obj)
+        private void EditNodeExecute(object obj)
         {
             if (!(obj is IEnumerable<object>) || ((IEnumerable<object>) obj).Count() != 1)
             {
