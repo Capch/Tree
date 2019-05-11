@@ -210,6 +210,51 @@ namespace TreeMulti
             }
             SetSelectedProp();
         }
+        
+        protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
+        {
+            TreeViewItem tvItem = null;
+
+            if (!IsCtrlPressed)
+            {
+                var items = GetTreeViewItems(this, true);
+                foreach (var treeViewItem in items)
+                    SetIsItemSelected(treeViewItem, false);
+
+                SelectedItems = new List<object>();
+            }
+            tvItem = GetTreeViewItemClicked((FrameworkElement)e.OriginalSource);
+            if (tvItem == null) return;
+
+            if (IsShiftPressed && _lastItemSelected != null)
+            {
+                var items = GetTreeViewItemRange(_lastItemSelected, tvItem);
+                if (items.Count > 0)
+                {
+                    foreach (var treeViewItem in items)
+                        SetIsItemSelected(treeViewItem, true);
+                    if (items.Count == 1)
+                    {
+                        _lastItemSelected = items.Last();
+                    }
+                }
+
+            }
+            else
+            {
+                if (GetIsItemSelected(tvItem) == false)
+                {
+                    SetIsItemSelected(tvItem, true);
+                }
+                else
+                {
+                    SetIsItemSelected(tvItem, false);
+                }
+                _lastItemSelected = tvItem;
+            }
+            SetSelectedProp();
+            base.OnGotKeyboardFocus(e);
+        }
 
         private static TreeViewItem GetTreeViewItemClicked(DependencyObject sender)
         {
