@@ -21,5 +21,15 @@ namespace TreeMulti.View
             return "Add/Edit node";
         }
 
+        public ResizeMode GetResizeMode()
+        {
+            return ResizeMode.NoResize;
+        }
+
+        public SizeToContent GetSizeToContent()
+        {
+            return SizeToContent.Height;
+        }
+
     }
 }

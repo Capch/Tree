@@ -21,5 +21,14 @@ namespace TreeMulti.View
             return "Tree test";
         }
 
+        public ResizeMode GetResizeMode()
+        {
+            return ResizeMode.CanResize;
+        }
+
+        public SizeToContent GetSizeToContent()
+        {
+            return SizeToContent.Manual;
+        }
     }
 }

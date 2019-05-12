@@ -6,5 +6,8 @@ namespace TreeMulti.Interfaces
     {
         Size GetWindowSize();
         string GetWindowTitle();
+        ResizeMode GetResizeMode();
+        SizeToContent GetSizeToContent();
+
     }
 }

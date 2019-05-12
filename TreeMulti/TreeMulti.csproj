@@ -95,6 +95,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\MultiSelectTreeViewExtensions.cs" />
     <Compile Include="Controls\MultiSelectTreeView.cs" />
     <Compile Include="Helpers\DialogBase.xaml.cs">
       <DependentUpon>DialogBase.xaml</DependentUpon>
@@ -147,6 +148,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

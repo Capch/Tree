@@ -14,7 +14,7 @@
             <Setter Property="TextWrapping" Value="Wrap"></Setter>
             <Setter Property="VerticalScrollBarVisibility" Value="Auto"></Setter>
             <Setter Property="AcceptsReturn" Value="True"></Setter>
-            <Setter Property="MaxHeight" Value="100"></Setter>
+            <Setter Property="MaxHeight" Value="150"></Setter>
         </Style>
         <DataTemplate DataType="{x:Type model:GroupNode}">
             <Grid>

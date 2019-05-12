@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -79,35 +80,19 @@ namespace TreeMulti
             SelectedItems = selectedModelItems;
             SelectCount = selectedModelItems.Count;
         }
-        
+
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
         {
+            //if (e.OriginalSource is Shape || e.OriginalSource is Grid)
+            //{
+            //    var items = GetTreeViewItems(this, true);
+            //    foreach (var treeViewItem in items)
+            //        SetIsItemSelected(treeViewItem, false);
+            
+            //    SelectedItems = new List<object>(){};
+            //    SelectCount = 0;
+            //}
             base.OnPreviewMouseDown(e);
-
-            // If clicking on a tree branch expander...   || e.OriginalSource is Border
-            if (e.OriginalSource is Shape || e.OriginalSource is Grid)
-            {
-                var items = GetTreeViewItems(this, true);
-                foreach (var treeViewItem in items)
-                    SetIsItemSelected(treeViewItem, false);
-                SelectedItems = new List<object>();
-                SelectCount = 0;
-                return;
-            }
-            var item = GetTreeViewItemClicked((FrameworkElement)e.OriginalSource);
-            if (item == null) return;
-            switch (SelectMode)
-            {
-                case SelectionMode.Single:
-                    SingleItemChangedInternal(item);
-                    break;
-                case SelectionMode.Multiple:
-                    MultiItemChangedInternal(item);
-                    break;
-                case SelectionMode.Extended:
-                    ExtendedItemChangedInternal(item);
-                    break;
-            }
         }
 
         public ItemsControl GetSelectedTreeViewItemParent(TreeViewItem item)
@@ -124,11 +109,11 @@ namespace TreeMulti
         private void MultiItemChangedInternal(TreeViewItem tvItem)
         {
             var isOneParent = GetTreeViewItems(this, true)
-                .Where(x=>x.IsSelected)
+                .Where(GetIsItemSelected)
                 .All(x => GetSelectedTreeViewItemParent(x) == GetSelectedTreeViewItemParent(tvItem));
             if (!IsCtrlPressed || !isOneParent)
             {
-                var items = GetTreeViewItems(this, true);
+                var items = GetTreeViewItems(this, false);
                 foreach (var treeViewItem in items)
                 {
                     SetIsItemSelected(treeViewItem, false);
@@ -141,10 +126,11 @@ namespace TreeMulti
                 if (items.Count > 0)
                 {
                     foreach (var treeViewItem in items)
-                    {
                         SetIsItemSelected(treeViewItem, true);
+                    if (items.Count == 1)
+                    {
+                        _lastItemSelected = items.Last();
                     }
-                    _lastItemSelected = items.Last();
                 }
             }
             else
@@ -159,7 +145,6 @@ namespace TreeMulti
                 }
                 _lastItemSelected = tvItem;
             }
-            SetSelectedProp();
         }
 
         //Single
@@ -169,7 +154,6 @@ namespace TreeMulti
             SetIsItemSelected(tvItem, true);
             _lastItemSelected = tvItem;
 
-            SetSelectedProp();
         }
 
         //Extended
@@ -208,53 +192,37 @@ namespace TreeMulti
                 }
                 _lastItemSelected = tvItem;
             }
-            SetSelectedProp();
         }
-        
-        protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
+
+
+        protected override void OnSelectedItemChanged(RoutedPropertyChangedEventArgs<object> e)
         {
-            TreeViewItem tvItem = null;
 
-            if (!IsCtrlPressed)
+            var item = GetTreeViewItemClicked(ItemContainerGenerator.ContainerFromItemRecursive(SelectedItem) as FrameworkElement);
+            if (item == null) return;
+
+            switch (SelectMode)
             {
-                var items = GetTreeViewItems(this, true);
-                foreach (var treeViewItem in items)
-                    SetIsItemSelected(treeViewItem, false);
-
-                SelectedItems = new List<object>();
-            }
-            tvItem = GetTreeViewItemClicked((FrameworkElement)e.OriginalSource);
-            if (tvItem == null) return;
-
-            if (IsShiftPressed && _lastItemSelected != null)
-            {
-                var items = GetTreeViewItemRange(_lastItemSelected, tvItem);
-                if (items.Count > 0)
-                {
-                    foreach (var treeViewItem in items)
-                        SetIsItemSelected(treeViewItem, true);
-                    if (items.Count == 1)
-                    {
-                        _lastItemSelected = items.Last();
-                    }
-                }
-
-            }
-            else
-            {
-                if (GetIsItemSelected(tvItem) == false)
-                {
-                    SetIsItemSelected(tvItem, true);
-                }
-                else
-                {
-                    SetIsItemSelected(tvItem, false);
-                }
-                _lastItemSelected = tvItem;
+                case SelectionMode.Single:
+                    SingleItemChangedInternal(item);
+                    break;
+                case SelectionMode.Multiple:
+                    MultiItemChangedInternal(item);
+                    break;
+                case SelectionMode.Extended:
+                    ExtendedItemChangedInternal(item);
+                    break;
             }
             SetSelectedProp();
-            base.OnGotKeyboardFocus(e);
+            base.OnSelectedItemChanged(e);
         }
+
+        protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
+        {
+            SetSelectedProp();
+            base.OnItemsChanged(e);
+        }
+
 
         private static TreeViewItem GetTreeViewItemClicked(DependencyObject sender)
         {

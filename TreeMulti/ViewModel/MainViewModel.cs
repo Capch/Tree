@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using TreeMulti.Interfaces;
 using TreeMulti.Model;
@@ -17,7 +16,7 @@ namespace TreeMulti.ViewModel
         private int _count;
         private IEnumerable<object> _selectedItems;
         private ObservableCollectionEx<Node> _tree;
-        private bool _isTreeChanged = false;
+        private bool _isTreeChanged;
 
         public MainViewModel(ITreeRepository treeRepository, IDialogService dialogService, Func<Node, AddViewModel> addEditVmFunc)
         {
@@ -235,9 +234,6 @@ namespace TreeMulti.ViewModel
                     }
                 }
             }
-
-            Count = 0;
-            SelectedItems=new List<object>();
             TreeChanged();
         }
 

@@ -31,6 +31,9 @@ namespace TreeMulti
                     view.DataContext = viewModel;
                     var window = new DialogBase(view)
                     {
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                        SizeToContent = ((IWindowConfiguration)view).GetSizeToContent(),
+                        ResizeMode = ((IWindowConfiguration)view).GetResizeMode(),
                         Title = (view as IWindowConfiguration)?.GetWindowTitle(),
                         Height = ((IWindowConfiguration)view).GetWindowSize().Height,
                         Width = ((IWindowConfiguration)view).GetWindowSize().Width

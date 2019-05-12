@@ -24,6 +24,7 @@
             <Style TargetType="TextBlock">
                 <Setter Property="Margin" Value="5,2,5,2" />
                 <Setter Property="FontSize" Value="14"/>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
             </Style>
 
         </ResourceDictionary>
@@ -45,7 +46,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Res/folder.png" Margin="0,0,5,0" Width="20" Height="20"/>
                         <TextBlock Text="{Binding Name}" Style="{StaticResource {x:Type TextBlock}}"/>
-                        <TextBlock Text="{Binding Comment}" Foreground="Blue" Style="{StaticResource {x:Type TextBlock}}" 
+                        <TextBlock Text="{Binding Comment}" FontSize="12" Style="{StaticResource {x:Type TextBlock}}" 
                                    HorizontalAlignment="Stretch"/>
                     </StackPanel>
                 </HierarchicalDataTemplate>
@@ -54,7 +55,7 @@
                         <Image Source="/Res/1.ico" Margin="0,0,5,0" Width="20" Height="20" />
                         <TextBlock Text="{Binding Name}" Style="{StaticResource {x:Type TextBlock}}"/>
                         <TextBlock Text="{Binding Comment}" Style="{StaticResource {x:Type TextBlock}}"/>
-                        <TextBlock Text="{Binding Comment2}" Foreground="Blue" Style="{StaticResource {x:Type TextBlock}}" />
+                        <TextBlock Text="{Binding Comment2}" FontSize="12" Style="{StaticResource {x:Type TextBlock}}" />
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type model:Node2}">
@@ -62,8 +63,8 @@
                         <Image Source="/Res/2.png" Margin="0,0,5,0" Width="20" Height="20" />
                         <TextBlock Text="{Binding Name}" Style="{StaticResource {x:Type TextBlock}}"/>
                         <TextBlock Text="{Binding Comment}" Style="{StaticResource {x:Type TextBlock}}"/>
-                        <TextBlock Text="{Binding Comment2}" Foreground="Blue" Style="{StaticResource {x:Type TextBlock}}"/>
-                        <TextBlock Text="{Binding Comment3}" Foreground="Blue" Style="{StaticResource {x:Type TextBlock}}"/>
+                        <TextBlock Text="{Binding Comment2}" FontSize="12" Style="{StaticResource {x:Type TextBlock}}"/>
+                        <TextBlock Text="{Binding Comment3}" FontSize="12" Style="{StaticResource {x:Type TextBlock}}"/>
                     </StackPanel>
                 </DataTemplate>
             </local:MultiSelectTreeView.Resources>
