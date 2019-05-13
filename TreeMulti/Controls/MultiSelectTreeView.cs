@@ -24,22 +24,11 @@ namespace TreeMulti
             new FrameworkPropertyMetadata(
                 null,
                 FrameworkPropertyMetadataOptions.AffectsMeasure |
-                FrameworkPropertyMetadataOptions.AffectsRender |
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
-        public static readonly DependencyProperty SelectCountProperty = DependencyProperty.Register(
-            name: nameof(SelectCount),
-            typeof(int),
-            typeof(MultiSelectTreeView),
-            new FrameworkPropertyMetadata(
-                0,
-                FrameworkPropertyMetadataOptions.AffectsMeasure |
-                FrameworkPropertyMetadataOptions.AffectsRender |
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
+                FrameworkPropertyMetadataOptions.AffectsRender));
+        
         public static readonly DependencyProperty SelectModeProperty = DependencyProperty.Register(nameof(SelectMode), typeof(SelectionMode),
             typeof(MultiSelectTreeView), new PropertyMetadata(SelectionMode.Single));
-
+        
         public static void SetIsItemSelected(UIElement element, bool value)
         {
             element.SetValue(IsItemSelectedProperty, value);
@@ -55,19 +44,13 @@ namespace TreeMulti
             get => (IEnumerable<object>)GetValue(SelectedItemsProperty);
             set => SetValue(SelectedItemsProperty, value);
         }
-
-        public int SelectCount
-        {
-            get => (int)GetValue(SelectCountProperty);
-            set => SetValue(SelectCountProperty, value);
-        }
-
+        
         private bool IsCtrlPressed => Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
         private bool IsShiftPressed => Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
 
         public SelectionMode SelectMode
         {
-            get => (SelectionMode)GetValue(SelectModeProperty);
+            private get => (SelectionMode)GetValue(SelectModeProperty);
             set => SetValue(SelectModeProperty, value);
         }
 
@@ -78,39 +61,49 @@ namespace TreeMulti
                                                           .ToList();
 
             SelectedItems = selectedModelItems;
-            SelectCount = selectedModelItems.Count;
         }
 
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
         {
-            //if (e.OriginalSource is Shape || e.OriginalSource is Grid)
-            //{
-            //    var items = GetTreeViewItems(this, true);
-            //    foreach (var treeViewItem in items)
-            //        SetIsItemSelected(treeViewItem, false);
-            
-            //    SelectedItems = new List<object>(){};
-            //    SelectCount = 0;
-            //}
+            if (e.OriginalSource is Shape || e.OriginalSource is Grid)
+            {
+                var items = GetTreeViewItems(this, true);
+                foreach (var treeViewItem in items)
+                {
+                    SetIsItemSelected(treeViewItem, false);
+                    treeViewItem.IsSelected = false;
+                }
+                SelectedItems = new List<object>() { };
+            }
             base.OnPreviewMouseDown(e);
         }
 
-        public ItemsControl GetSelectedTreeViewItemParent(TreeViewItem item)
+        private ItemsControl GetSelectedTreeViewItemParent(TreeViewItem item)
         {
             var parent = VisualTreeHelper.GetParent(item);
-            while (!(parent is TreeViewItem || parent is TreeView))
+            while (parent!=null && !(parent is TreeViewItem || parent is TreeView))
             {
                 parent = VisualTreeHelper.GetParent(parent);
             }
             return parent as ItemsControl;
         }
 
-        //Multi
+
+        //Multiple or Extended mode
         private void MultiItemChangedInternal(TreeViewItem tvItem)
         {
-            var isOneParent = GetTreeViewItems(this, true)
-                .Where(GetIsItemSelected)
-                .All(x => GetSelectedTreeViewItemParent(x) == GetSelectedTreeViewItemParent(tvItem));
+            bool isOneParent;
+            if (SelectMode == SelectionMode.Multiple)
+            {
+                isOneParent = GetTreeViewItems(this, true)
+                    .Where(GetIsItemSelected)
+                    .All(x => GetSelectedTreeViewItemParent(x) == GetSelectedTreeViewItemParent(tvItem));
+            }
+            else
+            {
+                isOneParent = true;
+            }
+
             if (!IsCtrlPressed || !isOneParent)
             {
                 var items = GetTreeViewItems(this, false);
@@ -146,8 +139,8 @@ namespace TreeMulti
                 _lastItemSelected = tvItem;
             }
         }
-
-        //Single
+         
+        //Single mode
         private void SingleItemChangedInternal(TreeViewItem tvItem)
         {
             if (_lastItemSelected != null) SetIsItemSelected(_lastItemSelected, false);
@@ -155,50 +148,11 @@ namespace TreeMulti
             _lastItemSelected = tvItem;
 
         }
-
-        //Extended
-        private void ExtendedItemChangedInternal(TreeViewItem tvItem)
-        {
-
-            if (!IsCtrlPressed)
-            {
-                var items = GetTreeViewItems(this, true);
-                foreach (var treeViewItem in items)
-                    SetIsItemSelected(treeViewItem, false);
-
-                SelectedItems = new List<object>();
-            }
-
-            if (IsShiftPressed && _lastItemSelected != null)
-            {
-                var items = GetTreeViewItemRange(_lastItemSelected, tvItem);
-                if (items.Count > 0)
-                {
-                    foreach (var treeViewItem in items)
-                        SetIsItemSelected(treeViewItem, true);
-                    _lastItemSelected = items.Last();
-                }
-
-            }
-            else
-            {
-                if (GetIsItemSelected(tvItem) == false)
-                {
-                    SetIsItemSelected(tvItem, true);
-                }
-                else
-                {
-                    SetIsItemSelected(tvItem, false);
-                }
-                _lastItemSelected = tvItem;
-            }
-        }
-
-
+        
         protected override void OnSelectedItemChanged(RoutedPropertyChangedEventArgs<object> e)
         {
 
-            var item = GetTreeViewItemClicked(ItemContainerGenerator.ContainerFromItemRecursive(SelectedItem) as FrameworkElement);
+            var item = GetTreeViewItemClicked(ItemContainerGenerator.ContainerFromItemRecursive(SelectedItem));
             if (item == null) return;
 
             switch (SelectMode)
@@ -210,7 +164,7 @@ namespace TreeMulti
                     MultiItemChangedInternal(item);
                     break;
                 case SelectionMode.Extended:
-                    ExtendedItemChangedInternal(item);
+                    MultiItemChangedInternal(item);
                     break;
             }
             SetSelectedProp();

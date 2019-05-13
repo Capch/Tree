@@ -18,15 +18,19 @@ namespace TreeMulti.Test
         private Mock<AddViewModel> _addEditVmMock;
         private static readonly object[] _changedNodes =
         {
+            new Node1(),
+            new Node2(),
+            new GroupNode(),
             new Node1("changed", "changed", "changed"),
             new Node2("changed", "changed", "changed", "changed"),
             new GroupNode("changed", "changed")
 
         };
 
-        public void MainViewModelMockInitialize(Node node, bool expectedAddEditVmDialogResult, NodeTypes nodeTypes = NodeTypes.Node1)
+        private void MainViewModelMockInitialize(Node inputCreateEditNode, bool expectedAddEditVmDialogResult = true,
+            NodeTypes expectedInputCreateEditNodeType = NodeTypes.Node1)
         {
-            if (!node.IsNotEmpty()) node.SetDefault();
+            if (!inputCreateEditNode.IsNotEmpty()) inputCreateEditNode.SetDefault();
 
             var mockRepository = new Mock<ITreeRepository>();
             mockRepository.Setup(a => a.GetTree()).Returns(new ObservableCollection<Data.Node>()
@@ -42,8 +46,8 @@ namespace TreeMulti.Test
                 }
             });
 
-            _addEditVmMock = new Mock<AddViewModel>(node);
-            _addEditVmMock.SetupProperty(x => x.NewNode, node);
+            _addEditVmMock = new Mock<AddViewModel>(inputCreateEditNode);
+            _addEditVmMock.SetupProperty(x => x.NewNode, inputCreateEditNode);
             _addEditVmMock.SetupProperty(x => x.Result, expectedAddEditVmDialogResult);
 
             var mockDialogTrue = new Mock<IDialogService>();
@@ -52,7 +56,7 @@ namespace TreeMulti.Test
             var mainViewModelMock = new Mock<MainViewModel>(mockRepository.Object, mockDialogTrue.Object,
                 new Func<Model.Node, AddViewModel>(x => _addEditVmMock.Object));
 
-            mainViewModelMock.Setup(x => x.CreateNodeForAddEditVm(nodeTypes)).Returns(node);
+            mainViewModelMock.Setup(x => x.CreateNodeForAddEditVm(expectedInputCreateEditNodeType)).Returns(inputCreateEditNode);
 
             _mainViewModel = mainViewModelMock.Object;
             _mainViewModel.SelectedItems = new List<object>();
@@ -61,7 +65,7 @@ namespace TreeMulti.Test
         [Test]
         public void DeleteCommand_BadInput_DoesNotDelete()
         {
-            MainViewModelMockInitialize(new Node1(), true);
+            MainViewModelMockInitialize(new Node1());
             var count = _mainViewModel.Tree.Count;
 
             _mainViewModel.DeleteCommand.Execute(_mainViewModel.SelectedItems);
@@ -72,7 +76,7 @@ namespace TreeMulti.Test
         [Test]
         public void DeleteCommand_SingleSelect_Delete()
         {
-            MainViewModelMockInitialize(new Node1(), true);
+            MainViewModelMockInitialize(new Node1());
             var count = _mainViewModel.Tree.Count;
             var selectedOne = new List<object>
             {
@@ -87,7 +91,7 @@ namespace TreeMulti.Test
         [Test]
         public void DeleteCommand_SelectedAll_Delete()
         {
-            MainViewModelMockInitialize(new Node1(), true);
+            MainViewModelMockInitialize(new Node1());
             var count = _mainViewModel.Tree.Count;
             var selectedAll = new List<object>(_mainViewModel.Tree);
 
@@ -95,9 +99,7 @@ namespace TreeMulti.Test
 
             Assert.IsTrue(_mainViewModel.Tree.Count == count - selectedAll.Count);
         }
-
-
-
+        
         [Test]
         public void AddCommand_SelectedNull_AddToRoot([Values] NodeTypes nodeTypes)
         {
@@ -156,7 +158,6 @@ namespace TreeMulti.Test
         [Test, TestCaseSource(nameof(_changedNodes))]
         public void EditCommand_SelectedNode_Changed(Node changeNode)
         {
-            //var changeNode = new Node1("changed", "changed", "changed");
             MainViewModelMockInitialize(changeNode, true);
             var selectedNode = _mainViewModel.Tree.First();
             var select = new List<object>
@@ -189,6 +190,7 @@ namespace TreeMulti.Test
             Assert.AreNotEqual(nodeAfterEdit, changeNode);
             Assert.IsTrue(_mainViewModel.Tree.Count == count);
         }
+
     }
 }
 

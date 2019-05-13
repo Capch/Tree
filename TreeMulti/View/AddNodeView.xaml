@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:model="clr-namespace:TreeMulti.Model"
              xmlns:viewModel="clr-namespace:TreeMulti.ViewModel"
+             xmlns:local="clr-namespace:TreeMulti"
              mc:Ignorable="d"
         d:DataContext="{d:DesignInstance d:Type={x:Type viewModel:AddViewModel}}">
 
@@ -103,7 +104,20 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="{Binding Mode}" Command="{Binding AddCommand}" Margin="0,10,5,10" />
+                <Button Grid.Column="0" Command="{Binding AddCommand}" Margin="0,10,5,10">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Mode}" Value="{x:Static local:WindowMode.Add}">
+                                    <Setter Property="Content" Value="Add" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=Mode}" Value="{x:Static local:WindowMode.Edit}">
+                                    <Setter Property="Content" Value="Edit" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
                 <Button Grid.Column="1" Content="Cancel" Command="{Binding CancelCommand}" Margin="5,10,0,10" />
             </Grid>
         </Grid>

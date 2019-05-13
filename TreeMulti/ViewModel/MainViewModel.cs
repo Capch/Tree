@@ -46,6 +46,7 @@ namespace TreeMulti.ViewModel
             set
             {
                 _selectedItems = value;
+                Count = value.Count();
                 OnPropertyChanged();
             }
         }
@@ -111,8 +112,7 @@ namespace TreeMulti.ViewModel
             {
                 item = (Node)SelectedItems.ToList().FirstOrDefault();
             }
-            
-            Node resultNode;
+
             NodeTypes type;
             if (obj is NodeTypes types)
             {
@@ -123,7 +123,7 @@ namespace TreeMulti.ViewModel
                 return;
             }
             
-            resultNode = CatchNode(_addEditVmFunc, CreateNodeForAddEditVm(type));
+            var resultNode = CatchNode(_addEditVmFunc, CreateNodeForAddEditVm(type));
 
             if (resultNode == null)
             {
@@ -240,25 +240,25 @@ namespace TreeMulti.ViewModel
         private void ResetInit(object obj)
         {
             var g1 = new GroupNode("group1", "comment1");
-            var n1_1 = new Node2("Node2", "comment1", "comment2", "comment3") { Parent = g1 };
-            var n1_2 = new Node1("Node1", "comment1", "comment2") { Parent = g1 };
+            var n11 = new Node2("Node2", "comment1", "comment2", "comment3") { Parent = g1 };
+            var n12 = new Node1("Node1", "comment1", "comment2") { Parent = g1 };
 
-            g1.AddChild(n1_1);
-            g1.AddChild(n1_2);
+            g1.AddChild(n11);
+            g1.AddChild(n12);
 
             var g2 = new GroupNode("group2", "comment1");
-            var n1_3 = new Node2("Node2", "comment1", "comment2", "comment3") { Parent = g2 };
-            var n1_4 = new Node1("Node1", "comment1", "comment2") { Parent = g2 };
+            var n13 = new Node2("Node2", "comment1", "comment2", "comment3") { Parent = g2 };
+            var n14 = new Node1("Node1", "comment1", "comment2") { Parent = g2 };
 
-            g2.AddChild(n1_3);
-            g2.AddChild(n1_4);
+            g2.AddChild(n13);
+            g2.AddChild(n14);
 
             var g3 = new GroupNode("group2", "comment1") { Parent = g2 };
-            var n1_5 = new Node2("Node2", "comment1", "comment2", "comment3") { Parent = g3 };
-            var n1_6 = new Node1("Node1", "comment1", "comment2") { Parent = g3 };
+            var n15 = new Node2("Node2", "comment1", "comment2", "comment3") { Parent = g3 };
+            var n16 = new Node1("Node1", "comment1", "comment2") { Parent = g3 };
 
-            g3.AddChild(n1_5);
-            g3.AddChild(n1_6);
+            g3.AddChild(n15);
+            g3.AddChild(n16);
             g2.AddChild(g3);
 
             Tree = new ObservableCollectionEx<Node> { g1, g2 };

@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using TreeMulti.Interfaces;
 using TreeMulti.Model;
+// ReSharper disable VirtualMemberCallInConstructor
 
 namespace TreeMulti.ViewModel
 {
@@ -20,7 +21,7 @@ namespace TreeMulti.ViewModel
             if (NewNode != null && !NewNode.IsNotEmpty())
             {
                 NewNode.SetDefault();
-                Mode = "Add";
+                Mode = WindowMode.Add;
             }
         }
 
@@ -37,7 +38,7 @@ namespace TreeMulti.ViewModel
             }
         }
 
-        public string Mode { get; set; } = "Edit";
+        public WindowMode Mode { get; set; } = WindowMode.Edit;
 
         private bool IsFieldNotEmpty(object arg)
         {

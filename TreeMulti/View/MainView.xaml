@@ -36,8 +36,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <local:MultiSelectTreeView Grid.Row="0" SelectCount="{Binding Count}" SelectedItems="{Binding SelectedItems, 
-            UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Tree, UpdateSourceTrigger=PropertyChanged}" 
+        <local:MultiSelectTreeView Grid.Row="0" SelectedItems="{Binding SelectedItems, UpdateSourceTrigger=PropertyChanged}" 
+                                   ItemsSource="{Binding Tree, UpdateSourceTrigger=PropertyChanged}" 
                                    SelectMode="{x:Static SelectionMode.Extended}"
                                    ItemContainerStyle="{StaticResource MultiSelectTreeViewItemStyle}" 
                                    HorizontalContentAlignment="Stretch" Padding="10" Margin="10" FontSize="16">
@@ -84,7 +84,7 @@
                 </xctk:DropDownButton.DropDownContent>
             </xctk:DropDownButton>
             <Button Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItems}" Content="Edit"/>
-            <Button Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItems}" Content="{Binding Count}" 
+            <Button Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItems}" Content="{Binding Path=Count}" 
                     ContentStringFormat="Delete ({0})"/>
             <Button Command="{Binding InitCommand}" Content="Init"/>
         </StackPanel>
